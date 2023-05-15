@@ -1,0 +1,3074 @@
+# -*- coding: mbcs -*-
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+mdb.openStep(
+    'C:/Users/ck20044/OneDrive - University of Bristol/Summative FEA coursewokr/GCU Lifting Lug v1.step'
+    , scaleFromFile=OFF)
+mdb.models['Model-1'].PartFromGeometryFile(combine=False, dimensionality=
+    THREE_D, geometryFile=mdb.acis, name='GCU Lifting Lug v1', type=
+    DEFORMABLE_BODY)
+mdb.models['Model-1'].Material(name='Structural Steel')
+mdb.models['Model-1'].materials['Structural Steel'].Elastic(table=((209000.0, 
+    0.3), ))
+mdb.models['Model-1'].HomogeneousSolidSection(material='Structural Steel', 
+    name='Solid Section', thickness=None)
+mdb.models['Model-1'].parts['GCU Lifting Lug v1'].Set(cells=
+    mdb.models['Model-1'].parts['GCU Lifting Lug v1'].cells.getSequenceFromMask(
+    ('[#1 ]', ), ), name='Set-1')
+mdb.models['Model-1'].parts['GCU Lifting Lug v1'].SectionAssignment(offset=0.0, 
+    offsetField='', offsetType=MIDDLE_SURFACE, region=
+    mdb.models['Model-1'].parts['GCU Lifting Lug v1'].sets['Set-1'], 
+    sectionName='Solid Section', thicknessAssignment=FROM_SECTION)
+mdb.models['Model-1'].ConstrainedSketch(name='__profile__', sheetSize=200.0)
+mdb.models['Model-1'].sketches['__profile__'].CircleByCenterPerimeter(center=(
+    0.0, 0.0), point1=(8.75, -8.75))
+mdb.models['Model-1'].sketches['__profile__'].RadialDimension(curve=
+    mdb.models['Model-1'].sketches['__profile__'].geometry[2], radius=20.0, 
+    textPoint=(12.438362121582, -16.2154006958008))
+mdb.models['Model-1'].Part(dimensionality=THREE_D, name='Pin/rope', type=
+    DEFORMABLE_BODY)
+mdb.models['Model-1'].parts['Pin/rope'].BaseSolidExtrude(depth=35.0, sketch=
+    mdb.models['Model-1'].sketches['__profile__'])
+del mdb.models['Model-1'].sketches['__profile__']
+mdb.models['Model-1'].ConstrainedSketch(name='__edit__', objectToCopy=
+    mdb.models['Model-1'].parts['Pin/rope'].features['Solid extrude-1'].sketch)
+mdb.models['Model-1'].parts['Pin/rope'].projectReferencesOntoSketch(filter=
+    COPLANAR_EDGES, sketch=mdb.models['Model-1'].sketches['__edit__'], 
+    upToFeature=
+    mdb.models['Model-1'].parts['Pin/rope'].features['Solid extrude-1'])
+mdb.models['Model-1'].sketches['__edit__'].RadialDimension(curve=
+    mdb.models['Model-1'].sketches['__edit__'].geometry[2], radius=10.0, 
+    textPoint=(11.6071434020996, -22.1108341217041))
+mdb.models['Model-1'].sketches['__edit__'].dimensions[0].setValues(textPoint=(
+    13.75, -17.8792743682861))
+del mdb.models['Model-1'].sketches['__edit__']
+mdb.models['Model-1'].ConstrainedSketch(name='__edit__', objectToCopy=
+    mdb.models['Model-1'].parts['Pin/rope'].features['Solid extrude-1'].sketch)
+mdb.models['Model-1'].parts['Pin/rope'].projectReferencesOntoSketch(filter=
+    COPLANAR_EDGES, sketch=mdb.models['Model-1'].sketches['__edit__'], 
+    upToFeature=
+    mdb.models['Model-1'].parts['Pin/rope'].features['Solid extrude-1'])
+mdb.models['Model-1'].sketches['__edit__'].dimensions[0].setValues(textPoint=(
+    18.3850364685059, -21.25))
+mdb.models['Model-1'].sketches['__edit__'].delete(objectList=(
+    mdb.models['Model-1'].sketches['__edit__'].dimensions[0], ))
+mdb.models['Model-1'].sketches['__edit__'].RadialDimension(curve=
+    mdb.models['Model-1'].sketches['__edit__'].geometry[2], radius=10.0, 
+    textPoint=(19.7970962524414, -18.7820072174072))
+mdb.models['Model-1'].parts['Pin/rope'].features['Solid extrude-1'].setValues(
+    sketch=mdb.models['Model-1'].sketches['__edit__'])
+del mdb.models['Model-1'].sketches['__edit__']
+mdb.models['Model-1'].parts['Pin/rope'].regenerate()
+mdb.models['Model-1'].parts['Pin/rope'].Set(cells=
+    mdb.models['Model-1'].parts['Pin/rope'].cells.getSequenceFromMask(('[#1 ]', 
+    ), ), name='Set-1')
+mdb.models['Model-1'].parts['Pin/rope'].SectionAssignment(offset=0.0, 
+    offsetField='', offsetType=MIDDLE_SURFACE, region=
+    mdb.models['Model-1'].parts['Pin/rope'].sets['Set-1'], sectionName=
+    'Solid Section', thicknessAssignment=FROM_SECTION)
+mdb.models['Model-1'].parts['Pin/rope'].DatumAxisByCylFace(face=
+    mdb.models['Model-1'].parts['Pin/rope'].faces[0])
+mdb.models['Model-1'].parts['GCU Lifting Lug v1'].DatumAxisByCylFace(face=
+    mdb.models['Model-1'].parts['GCU Lifting Lug v1'].faces[0])
+mdb.models['Model-1'].rootAssembly.DatumCsysByDefault(CARTESIAN)
+mdb.models['Model-1'].rootAssembly.Instance(dependent=ON, name=
+    'GCU Lifting Lug v1-1', part=
+    mdb.models['Model-1'].parts['GCU Lifting Lug v1'])
+mdb.models['Model-1'].rootAssembly.Instance(dependent=ON, name='Pin/rope-1', 
+    part=mdb.models['Model-1'].parts['Pin/rope'])
+mdb.models['Model-1'].rootAssembly.EdgeToEdge(fixedAxis=
+    mdb.models['Model-1'].rootAssembly.instances['GCU Lifting Lug v1-1'].datums[3]
+    , flip=OFF, movableAxis=
+    mdb.models['Model-1'].rootAssembly.instances['Pin/rope-1'].datums[3])
+mdb.models['Model-1'].rootAssembly.features['Edge to Edge-1'].setValues(flip=1)
+mdb.models['Model-1'].rootAssembly.regenerate()
+mdb.models['Model-1'].rootAssembly.features['Edge to Edge-1'].setValues(flip=0)
+mdb.models['Model-1'].rootAssembly.regenerate()
+del mdb.models['Model-1'].rootAssembly.features['Edge to Edge-1']
+mdb.models['Model-1'].rootAssembly.Coaxial(fixedAxis=
+    mdb.models['Model-1'].rootAssembly.instances['GCU Lifting Lug v1-1'].faces[0]
+    , flip=OFF, movableAxis=
+    mdb.models['Model-1'].rootAssembly.instances['Pin/rope-1'].faces[0])
+del mdb.models['Model-1'].rootAssembly.features['Coaxial-1']
+mdb.models['Model-1'].rootAssembly.EdgeToEdge(fixedAxis=
+    mdb.models['Model-1'].rootAssembly.instances['GCU Lifting Lug v1-1'].datums[3]
+    , flip=ON, movableAxis=
+    mdb.models['Model-1'].rootAssembly.instances['Pin/rope-1'].datums[3])
+mdb.models['Model-1'].parts['Pin/rope'].features['Solid extrude-1'].setValues(
+    depth=40.0)
+mdb.models['Model-1'].parts['Pin/rope'].regenerate()
+mdb.models['Model-1'].parts['Pin/rope'].regenerate()
+mdb.models['Model-1'].rootAssembly.regenerate()
+mdb.models['Model-1'].rootAssembly.FaceToFace(clearance=5.0, fixedPlane=
+    mdb.models['Model-1'].rootAssembly.instances['GCU Lifting Lug v1-1'].faces[15]
+    , flip=ON, movablePlane=
+    mdb.models['Model-1'].rootAssembly.instances['Pin/rope-1'].faces[1])
+#* FeatureError: The constraint cannot be applied because it conflicts 
+#* with existing position constraints.
+mdb.models['Model-1'].rootAssembly.translate(instanceList=('Pin/rope-1', ), 
+    vector=(0.0, 0.0, -3.5))
+mdb.models['Model-1'].parts['Pin/rope'].features['Solid extrude-1'].setValues(
+    depth=37.5)
+mdb.models['Model-1'].parts['Pin/rope'].regenerate()
+mdb.models['Model-1'].parts['Pin/rope'].regenerate()
+mdb.models['Model-1'].rootAssembly.regenerate()
+mdb.models['Model-1'].rootAssembly.regenerate()
+mdb.models['Model-1'].rootAssembly.regenerate()
+del mdb.models['Model-1'].rootAssembly.features['Edge to Edge-1']
+mdb.models['Model-1'].rootAssembly.EdgeToEdge(fixedAxis=
+    mdb.models['Model-1'].rootAssembly.instances['GCU Lifting Lug v1-1'].datums[3]
+    , flip=OFF, movableAxis=
+    mdb.models['Model-1'].rootAssembly.instances['Pin/rope-1'].datums[3])
+mdb.models['Model-1'].rootAssembly.DatumPlaneByTwoPoint(point1=
+    mdb.models['Model-1'].rootAssembly.instances['GCU Lifting Lug v1-1'].InterestingPoint(
+    mdb.models['Model-1'].rootAssembly.instances['GCU Lifting Lug v1-1'].edges[28], 
+    MIDDLE), point2=
+    mdb.models['Model-1'].rootAssembly.instances['GCU Lifting Lug v1-1'].InterestingPoint(
+    mdb.models['Model-1'].rootAssembly.instances['GCU Lifting Lug v1-1'].edges[29], 
+    MIDDLE))
+del mdb.models['Model-1'].rootAssembly.features['Edge to Edge-1']
+mdb.models['Model-1'].rootAssembly.DatumPlaneByTwoPoint(point1=
+    mdb.models['Model-1'].rootAssembly.instances['Pin/rope-1'].vertices[0], 
+    point2=
+    mdb.models['Model-1'].rootAssembly.instances['Pin/rope-1'].vertices[1])
+mdb.models['Model-1'].rootAssembly.DatumPlaneByTwoPoint(point1=
+    mdb.models['Model-1'].rootAssembly.instances['Pin/rope-1'].vertices[1], 
+    point2=
+    mdb.models['Model-1'].rootAssembly.instances['Pin/rope-1'].vertices[0])
+del mdb.models['Model-1'].rootAssembly.features['Datum plane-3']
+del mdb.models['Model-1'].rootAssembly.features['Datum plane-1']
+del mdb.models['Model-1'].rootAssembly.features['Datum plane-2']
+mdb.models['Model-1'].rootAssembly.EdgeToEdge(fixedAxis=
+    mdb.models['Model-1'].rootAssembly.instances['GCU Lifting Lug v1-1'].datums[3]
+    , flip=ON, movableAxis=
+    mdb.models['Model-1'].rootAssembly.instances['Pin/rope-1'].datums[3])
+mdb.models['Model-1'].rootAssembly.translate(instanceList=('Pin/rope-1', ), 
+    vector=(0.0, 0.0, 1.0))
+del mdb.models['Model-1'].rootAssembly.features['Edge to Edge-1']
+mdb.models['Model-1'].rootAssembly.DatumPointByMidPoint(point1=
+    mdb.models['Model-1'].rootAssembly.instances['Pin/rope-1'].InterestingPoint(
+    mdb.models['Model-1'].rootAssembly.instances['Pin/rope-1'].edges[0], 
+    MIDDLE), point2=
+    mdb.models['Model-1'].rootAssembly.instances['Pin/rope-1'].InterestingPoint(
+    mdb.models['Model-1'].rootAssembly.instances['Pin/rope-1'].edges[1], 
+    MIDDLE))
+mdb.models['Model-1'].rootAssembly.DatumPointByMidPoint(point1=
+    mdb.models['Model-1'].rootAssembly.instances['GCU Lifting Lug v1-1'].InterestingPoint(
+    mdb.models['Model-1'].rootAssembly.instances['GCU Lifting Lug v1-1'].edges[0], 
+    MIDDLE), point2=
+    mdb.models['Model-1'].rootAssembly.instances['GCU Lifting Lug v1-1'].InterestingPoint(
+    mdb.models['Model-1'].rootAssembly.instances['GCU Lifting Lug v1-1'].edges[2], 
+    MIDDLE))
+del mdb.models['Model-1'].rootAssembly.features['Datum pt-1']
+del mdb.models['Model-1'].rootAssembly.features['Datum pt-2']
+# Save by ck20044 on 2022_11_16-12.56.57; build 2022.HF3 2022_05_20-02.07.52 176569
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+mdb.models['Model-1'].rootAssembly.FaceToFace(clearance=0.0, fixedPlane=
+    mdb.models['Model-1'].rootAssembly.instances['GCU Lifting Lug v1-1'].faces[15]
+    , flip=OFF, movablePlane=
+    mdb.models['Model-1'].rootAssembly.instances['Pin/rope-1'].faces[1])
+del mdb.models['Model-1'].rootAssembly.features['Face to Face-1']
+mdb.models['Model-1'].rootAssembly.Coaxial(fixedAxis=
+    mdb.models['Model-1'].rootAssembly.instances['GCU Lifting Lug v1-1'].faces[0]
+    , flip=OFF, movableAxis=
+    mdb.models['Model-1'].rootAssembly.instances['Pin/rope-1'].faces[0])
+del mdb.models['Model-1'].rootAssembly.features['Coaxial-1']
+mdb.models['Model-1'].rootAssembly.translate(instanceList=('Pin/rope-1', ), 
+    vector=(130.0, 0.0, 0.0))
+mdb.models['Model-1'].ContactProperty('Friction')
+mdb.models['Model-1'].interactionProperties['Friction'].TangentialBehavior(
+    dependencies=0, directionality=ISOTROPIC, elasticSlipStiffness=None, 
+    formulation=PENALTY, fraction=0.005, maximumElasticSlip=FRACTION, 
+    pressureDependency=OFF, shearStressLimit=None, slipRateDependency=OFF, 
+    table=((0.2, ), ), temperatureDependency=OFF)
+mdb.models['Model-1'].ContactStd(createStepName='Initial', name='Contact')
+mdb.models['Model-1'].interactions['Contact'].includedPairs.setValuesInStep(
+    stepName='Initial', useAllstar=ON)
+mdb.models['Model-1'].interactions['Contact'].contactPropertyAssignments.appendInStep(
+    assignments=((GLOBAL, SELF, 'Friction'), ), stepName='Initial')
+# Save by ck20044 on 2022_11_17-14.40.03; build 2022.HF3 2022_05_20-02.07.52 176569
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+mdb.models['Model-1'].StaticStep(description='settle contact', initialInc=0.1, 
+    name='Settle', nlgeom=ON, previous='Initial')
+mdb.models['Model-1'].StaticStep(initialInc=0.1, name='Full-Load', previous=
+    'Settle')
+# Save by ck20044 on 2022_11_17-14.43.03; build 2022.HF3 2022_05_20-02.07.52 176569
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+mdb.models['Model-1'].rootAssembly.Set(faces=
+    mdb.models['Model-1'].rootAssembly.instances['GCU Lifting Lug v1-1'].faces.getSequenceFromMask(
+    ('[#110 ]', ), ), name='set-1')
+mdb.models['Model-1'].DisplacementBC(amplitude=UNSET, createStepName='Initial', 
+    distributionType=UNIFORM, fieldName='', localCsys=None, name='Fixed', 
+    region=mdb.models['Model-1'].rootAssembly.sets['set-1'], u1=SET, u2=SET, 
+    u3=SET, ur1=UNSET, ur2=UNSET, ur3=UNSET)
+mdb.models['Model-1'].rootAssembly.Surface(name='Surf-1', side1Faces=
+    mdb.models['Model-1'].rootAssembly.instances['Pin/rope-1'].faces.getSequenceFromMask(
+    ('[#1 ]', ), ))
+mdb.models['Model-1'].Pressure(amplitude=UNSET, createStepName='Settle', 
+    distributionType=UNIFORM, field='', magnitude=0.001, name='small-pressure', 
+    region=mdb.models['Model-1'].rootAssembly.surfaces['Surf-1'])
+mdb.models['Model-1'].parts['Pin/rope'].DatumPlaneByTwoPoint(point1=
+    mdb.models['Model-1'].parts['Pin/rope'].vertices[0], point2=
+    mdb.models['Model-1'].parts['Pin/rope'].vertices[1])
+mdb.models['Model-1'].parts['Pin/rope'].DatumPlaneByPrincipalPlane(offset=0.0, 
+    principalPlane=XZPLANE)
+del mdb.models['Model-1'].parts['Pin/rope'].features['Datum plane-1']
+mdb.models['Model-1'].parts['Pin/rope'].PartitionFaceByDatumPlane(datumPlane=
+    mdb.models['Model-1'].parts['Pin/rope'].datums[5], faces=
+    mdb.models['Model-1'].parts['Pin/rope'].faces.getSequenceFromMask(('[#6 ]', 
+    ), ))
+mdb.models['Model-1'].rootAssembly.regenerate()
+mdb.models['Model-1'].parts['Pin/rope'].PartitionFaceByDatumPlane(datumPlane=
+    mdb.models['Model-1'].parts['Pin/rope'].datums[5], faces=
+    mdb.models['Model-1'].parts['Pin/rope'].faces.getSequenceFromMask(('[#4 ]', 
+    ), ))
+# Save by ck20044 on 2022_11_17-14.59.46; build 2022.HF3 2022_05_20-02.07.52 176569
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+mdb.models['Model-1'].rootAssembly.regenerate()
+mdb.models['Model-1'].ConstrainedSketch(name='__edit__', objectToCopy=
+    mdb.models['Model-1'].parts['Pin/rope'].features['Solid extrude-1'].sketch)
+mdb.models['Model-1'].parts['Pin/rope'].projectReferencesOntoSketch(filter=
+    COPLANAR_EDGES, sketch=mdb.models['Model-1'].sketches['__edit__'], 
+    upToFeature=
+    mdb.models['Model-1'].parts['Pin/rope'].features['Solid extrude-1'])
+del mdb.models['Model-1'].sketches['__edit__']
+mdb.models['Model-1'].rootAssembly.Surface(name='Surf-2', side1Faces=
+    mdb.models['Model-1'].rootAssembly.instances['Pin/rope-1'].faces.getSequenceFromMask(
+    ('[#8 ]', ), ))
+mdb.models['Model-1'].SurfaceTraction(createStepName='Full-Load', 
+    directionVector=((0.0, 0.0, 0.0), (0.0, 1.0, 0.0)), distributionType=
+    UNIFORM, field='', follower=OFF, localCsys=None, magnitude=24.98, name=
+    'Full load surf trac', region=
+    mdb.models['Model-1'].rootAssembly.surfaces['Surf-2'], traction=GENERAL)
+# Save by ck20044 on 2022_11_17-15.04.12; build 2022.HF3 2022_05_20-02.07.52 176569
+# Save by ck20044 on 2022_11_17-15.04.16; build 2022.HF3 2022_05_20-02.07.52 176569
+# Save by ck20044 on 2022_11_17-15.04.17; build 2022.HF3 2022_05_20-02.07.52 176569
+# Save by ck20044 on 2022_11_17-15.04.18; build 2022.HF3 2022_05_20-02.07.52 176569
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+mdb.models['Model-1'].parts['GCU Lifting Lug v1'].seedPart(deviationFactor=0.1, 
+    minSizeFactor=0.1, size=4.0)
+mdb.models['Model-1'].parts['GCU Lifting Lug v1'].generateMesh()
+mdb.models['Model-1'].parts['Pin/rope'].seedPart(deviationFactor=0.1, 
+    minSizeFactor=0.1, size=2.0)
+mdb.models['Model-1'].parts['Pin/rope'].setMeshControls(elemShape=TET, regions=
+    mdb.models['Model-1'].parts['Pin/rope'].cells.getSequenceFromMask(('[#1 ]', 
+    ), ), technique=FREE)
+mdb.models['Model-1'].parts['Pin/rope'].setElementType(elemTypes=(ElemType(
+    elemCode=C3D20R, elemLibrary=STANDARD), ElemType(elemCode=C3D15, 
+    elemLibrary=STANDARD), ElemType(elemCode=C3D10, elemLibrary=STANDARD)), 
+    regions=(mdb.models['Model-1'].parts['Pin/rope'].cells.getSequenceFromMask(
+    ('[#1 ]', ), ), ))
+mdb.models['Model-1'].parts['Pin/rope'].generateMesh()
+mdb.models['Model-1'].rootAssembly.regenerate()
+mdb.Job(atTime=None, contactPrint=OFF, description='', echoPrint=OFF, 
+    explicitPrecision=SINGLE, getMemoryFromAnalysis=True, historyPrint=OFF, 
+    memory=90, memoryUnits=PERCENTAGE, model='Model-1', modelPrint=OFF, 
+    multiprocessingMode=DEFAULT, name='Job-1', nodalOutputPrecision=SINGLE, 
+    numCpus=1, numGPUs=0, numThreadsPerMpiProcess=1, queue=None, resultsFormat=
+    ODB, scratch='', type=ANALYSIS, userSubroutine='', waitHours=0, 
+    waitMinutes=0)
+mdb.jobs['Job-1'].submit(consistencyChecking=OFF)
+mdb.jobs['Job-1']._Message(STARTED, {'phase': BATCHPRE_PHASE, 
+    'clientHost': 'IT077784', 'handle': 0, 'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'TRVEC LOADS DEFINED WITH DIFFERENT DIRECTION COSINES ARE DETECTED. A TRVEC LOAD CAN ONLY BE MODIFIED WHEN THE LOAD DIRECTION IS SPECIFIED IN EXACTLY THE SAME WAY AS IN THE PREVIOUS STEP.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\Users\\ck20044\\OneDrive - University of Bristol\\Summative FEA coursewokr\\Job-1.odb', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(COMPLETED, {'phase': BATCHPRE_PHASE, 
+    'message': 'Analysis phase complete', 'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(STARTED, {'phase': STANDARD_PHASE, 
+    'clientHost': 'IT077784', 'handle': 12104, 'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(STEP, {'stepName': 'settle contact', 
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 0, 'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'Job-1', 'memory': 674.0})
+mdb.jobs['Job-1']._Message(PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 
+    'physical_memory': 16166.0, 'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(MINIMUM_MEMORY, {'minimum_memory': 111.0, 
+    'phase': STANDARD_PHASE, 'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 1 ratio = 5.79484E+12.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 2 ratio = 7.91496E+12.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 3 ratio = 6.38725E+12.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 2 ratio = 13.6074E+09 .', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 3 ratio = 20.4589E+09 .', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 2 ratio = 41.9611E+09 .', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 3 ratio = 74.6960E+09 .', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 2 ratio = 77.8936E+09 .', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 3 ratio = 134.836E+09  .', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 2 ratio = 133.807E+09  .', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 3 ratio = 205.001E+09  .', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 2 ratio = 256.761E+09  .', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 3 ratio = 333.777E+09  .', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 2 ratio = 319.355E+09  .', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 3 ratio = 317.031E+09  .', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 1, 'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(STATUS, {'totalTime': 0.1, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 1, 'stepTime': 0.1, 'step': 1, 
+    'jobName': 'Job-1', 'severe': 22, 'iterations': 22, 
+    'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 2 ratio = 31.4189E+09 .', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 3 ratio = 3.52982E+12.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 2, 'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(STATUS, {'totalTime': 0.2, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 2, 'stepTime': 0.2, 'step': 1, 
+    'jobName': 'Job-1', 'severe': 1, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 0})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 2 ratio = 7.05290E+12.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 3 ratio = 28.3865E+12 .', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 3, 'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(STATUS, {'totalTime': 0.35, 'attempts': 1, 
+    'timeIncrement': 0.15, 'increment': 3, 'stepTime': 0.35, 'step': 1, 
+    'jobName': 'Job-1', 'severe': 1, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 0})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 3 ratio = 25.9822E+12 .', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 4, 'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(STATUS, {'totalTime': 0.575, 'attempts': 1, 
+    'timeIncrement': 0.225, 'increment': 4, 'stepTime': 0.575, 'step': 1, 
+    'jobName': 'Job-1', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 3 ratio = 12.9310E+12 .', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 5, 'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(STATUS, {'totalTime': 0.9125, 'attempts': 1, 
+    'timeIncrement': 0.3375, 'increment': 5, 'stepTime': 0.9125, 'step': 1, 
+    'jobName': 'Job-1', 'severe': 1, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 0})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 1 ratio = 18.6378E+12 .', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 2 ratio = 1.88408E+12.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 3 ratio = 9.67468E+12.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 2 ratio = 6.16184E+09.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 3 ratio = 6.70281E+09.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 6, 'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(STATUS, {'totalTime': 1.0, 'attempts': 1, 
+    'timeIncrement': 0.0874999999999999, 'increment': 6, 'stepTime': 1.0, 
+    'step': 1, 'jobName': 'Job-1', 'severe': 17, 'iterations': 17, 
+    'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['Job-1']._Message(END_STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(STEP, {'phase': STANDARD_PHASE, 'stepId': 2, 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 0, 'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'Job-1', 'memory': 589.0})
+mdb.jobs['Job-1']._Message(PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 
+    'physical_memory': 16166.0, 'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(MINIMUM_MEMORY, {'minimum_memory': 99.0, 
+    'phase': STANDARD_PHASE, 'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 2 ratio = 2.94451E+12.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 3 ratio = 2.18760E+12.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'DISPLACEMENT INCREMENT FOR CONTACT IS TOO BIG.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'DISPLACEMENT INCREMENT FOR CONTACT IS TOO BIG.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'DISPLACEMENT INCREMENT FOR CONTACT IS TOO BIG.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'EXCESSIVE DISTORTION AT A TOTAL OF 218 INTEGRATION POINTS IN SOLID (CONTINUUM) ELEMENTS', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(STATUS, {'totalTime': 1.0, 'attempts': ' 1U', 
+    'timeIncrement': 0.1, 'increment': 1, 'stepTime': 0.0, 'step': 2, 
+    'jobName': 'Job-1', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 2 ratio = 2.94451E+12.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 3 ratio = 2.18760E+12.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'DISPLACEMENT INCREMENT FOR CONTACT IS TOO BIG.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'DISPLACEMENT INCREMENT FOR CONTACT IS TOO BIG.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'DISPLACEMENT INCREMENT FOR CONTACT IS TOO BIG.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'EXCESSIVE DISTORTION AT A TOTAL OF 21 INTEGRATION POINTS IN SOLID (CONTINUUM) ELEMENTS', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(STATUS, {'totalTime': 1.0, 'attempts': ' 2U', 
+    'timeIncrement': 0.025, 'increment': 1, 'stepTime': 0.0, 'step': 2, 
+    'jobName': 'Job-1', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 2 ratio = 2.94451E+12.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 3 ratio = 2.18760E+12.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'DISPLACEMENT INCREMENT FOR CONTACT IS TOO BIG.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'DISPLACEMENT INCREMENT FOR CONTACT IS TOO BIG.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'DISPLACEMENT INCREMENT FOR CONTACT IS TOO BIG.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'EXCESSIVE DISTORTION AT A TOTAL OF 1 INTEGRATION POINTS IN SOLID (CONTINUUM) ELEMENTS', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(STATUS, {'totalTime': 1.0, 'attempts': ' 3U', 
+    'timeIncrement': 0.00625, 'increment': 1, 'stepTime': 0.0, 'step': 2, 
+    'jobName': 'Job-1', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 2 ratio = 2.94451E+12.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 3 ratio = 2.18760E+12.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'DISPLACEMENT INCREMENT FOR CONTACT IS TOO BIG.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'DISPLACEMENT INCREMENT FOR CONTACT IS TOO BIG.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'DISPLACEMENT INCREMENT FOR CONTACT IS TOO BIG.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(STATUS, {'totalTime': 1.0, 'attempts': ' 4U', 
+    'timeIncrement': 0.0015625, 'increment': 1, 'stepTime': 0.0, 'step': 2, 
+    'jobName': 'Job-1', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 2 ratio = 2.94451E+12.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 3 ratio = 2.18760E+12.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'DISPLACEMENT INCREMENT FOR CONTACT IS TOO BIG.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'DISPLACEMENT INCREMENT FOR CONTACT IS TOO BIG.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'DISPLACEMENT INCREMENT FOR CONTACT IS TOO BIG.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(STATUS, {'totalTime': 1.0, 'attempts': ' 5U', 
+    'timeIncrement': 0.000390625, 'increment': 1, 'stepTime': 0.0, 'step': 2, 
+    'jobName': 'Job-1', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-1']._Message(ERROR, {'phase': STANDARD_PHASE, 
+    'message': 'Too many attempts made for this increment', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(ABORTED, {'phase': STANDARD_PHASE, 
+    'message': 'Analysis phase failed due to errors', 'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(ERROR, {
+    'message': 'Abaqus/Standard Analysis exited with an error - Please see the  message file for possible error messages if the file exists.', 
+    'jobName': 'Job-1'})
+mdb.jobs['Job-1']._Message(JOB_ABORTED, {
+    'message': 'Abaqus/Standard Analysis exited with an error - Please see the  message file for possible error messages if the file exists.', 
+    'jobName': 'Job-1'})
+mdb.models['Model-1'].interactions['Contact'].setValues(globalSmoothing=False)
+mdb.Job(atTime=None, contactPrint=OFF, description='', echoPrint=OFF, 
+    explicitPrecision=SINGLE, getMemoryFromAnalysis=True, historyPrint=OFF, 
+    memory=90, memoryUnits=PERCENTAGE, model='Model-1', modelPrint=OFF, 
+    multiprocessingMode=DEFAULT, name='Job-2', nodalOutputPrecision=SINGLE, 
+    numCpus=1, numGPUs=0, numThreadsPerMpiProcess=1, queue=None, resultsFormat=
+    ODB, scratch='', type=ANALYSIS, userSubroutine='', waitHours=0, 
+    waitMinutes=0)
+mdb.jobs['Job-2'].submit(consistencyChecking=OFF)
+mdb.jobs['Job-2']._Message(STARTED, {'phase': BATCHPRE_PHASE, 
+    'clientHost': 'IT077784', 'handle': 0, 'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'TRVEC LOADS DEFINED WITH DIFFERENT DIRECTION COSINES ARE DETECTED. A TRVEC LOAD CAN ONLY BE MODIFIED WHEN THE LOAD DIRECTION IS SPECIFIED IN EXACTLY THE SAME WAY AS IN THE PREVIOUS STEP.', 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\Users\\ck20044\\OneDrive - University of Bristol\\Summative FEA coursewokr\\Job-2.odb', 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(COMPLETED, {'phase': BATCHPRE_PHASE, 
+    'message': 'Analysis phase complete', 'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(STARTED, {'phase': STANDARD_PHASE, 
+    'clientHost': 'IT077784', 'handle': 11268, 'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(STEP, {'stepName': 'settle contact', 
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 0, 'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'Job-2', 'memory': 635.0})
+mdb.jobs['Job-2']._Message(PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 
+    'physical_memory': 16166.0, 'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(MINIMUM_MEMORY, {'minimum_memory': 108.0, 
+    'phase': STANDARD_PHASE, 'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 1, 'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(STATUS, {'totalTime': 0.1, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 1, 'stepTime': 0.1, 'step': 1, 
+    'jobName': 'Job-2', 'severe': 1, 'iterations': 2, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-2']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 2, 'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(STATUS, {'totalTime': 0.2, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 2, 'stepTime': 0.2, 'step': 1, 
+    'jobName': 'Job-2', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-2']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 3, 'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(STATUS, {'totalTime': 0.35, 'attempts': 1, 
+    'timeIncrement': 0.15, 'increment': 3, 'stepTime': 0.35, 'step': 1, 
+    'jobName': 'Job-2', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-2']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 3 ratio = 50.1276E+09 .', 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 4, 'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(STATUS, {'totalTime': 0.575, 'attempts': 1, 
+    'timeIncrement': 0.225, 'increment': 4, 'stepTime': 0.575, 'step': 1, 
+    'jobName': 'Job-2', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-2']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 3 ratio = 8.53604E+12.', 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 3 ratio = 5.06529E+12.', 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 3 ratio = 10.5490E+12 .', 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 3 ratio = 6.09334E+12.', 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 3 ratio = 4.98560E+12.', 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 3 ratio = 6.39835E+12.', 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 5, 'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(STATUS, {'totalTime': 0.9125, 'attempts': 1, 
+    'timeIncrement': 0.3375, 'increment': 5, 'stepTime': 0.9125, 'step': 1, 
+    'jobName': 'Job-2', 'severe': 0, 'iterations': 6, 'phase': STANDARD_PHASE, 
+    'equilibrium': 6})
+mdb.jobs['Job-2']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 1 ratio = 8.23051E+12.', 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 2 ratio = 4.88365E+12.', 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 3 ratio = 16.5109E+12 .', 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(STATUS, {'totalTime': 0.9125, 'attempts': ' 1U', 
+    'timeIncrement': 0.0874999999999999, 'increment': 6, 'stepTime': 0.9125, 
+    'step': 1, 'jobName': 'Job-2', 'severe': 7, 'iterations': 7, 
+    'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['Job-2']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 3 ratio = 6.36215E+12.', 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 6, 'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(STATUS, {'totalTime': 0.934375, 'attempts': 2, 
+    'timeIncrement': 0.021875, 'increment': 6, 'stepTime': 0.934375, 'step': 1, 
+    'jobName': 'Job-2', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-2']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 3 ratio = 7.49354E+12.', 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 2 ratio = 19.6620E+09 .', 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 3 ratio = 5.67808E+12.', 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 2 ratio = 19.7045E+09 .', 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 3 ratio = 11.6817E+12 .', 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 2 ratio = 19.7033E+09 .', 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 3 ratio = 10.9811E+12 .', 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 3 ratio = 452.713E+09  .', 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 7, 'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(STATUS, {'totalTime': 0.95625, 'attempts': 1, 
+    'timeIncrement': 0.021875, 'increment': 7, 'stepTime': 0.95625, 'step': 1, 
+    'jobName': 'Job-2', 'severe': 1, 'iterations': 5, 'phase': STANDARD_PHASE, 
+    'equilibrium': 4})
+mdb.jobs['Job-2']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 2 ratio = 4.50456E+09.', 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(STATUS, {'totalTime': 0.95625, 'attempts': ' 1U', 
+    'timeIncrement': 0.0328125, 'increment': 8, 'stepTime': 0.95625, 'step': 1, 
+    'jobName': 'Job-2', 'severe': 9, 'iterations': 9, 'phase': STANDARD_PHASE, 
+    'equilibrium': 0})
+mdb.jobs['Job-2']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 3 ratio = 2.79057E+12.', 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 3 ratio = 3.68052E+12.', 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 8, 'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(STATUS, {'totalTime': 0.964453125, 'attempts': 2, 
+    'timeIncrement': 0.00820312499999999, 'increment': 8, 
+    'stepTime': 0.964453125, 'step': 1, 'jobName': 'Job-2', 'severe': 1, 
+    'iterations': 3, 'phase': STANDARD_PHASE, 'equilibrium': 2})
+mdb.jobs['Job-2']._Message(STATUS, {'totalTime': 0.964453125, 
+    'attempts': ' 1U', 'timeIncrement': 0.0123046875, 'increment': 9, 
+    'stepTime': 0.964453125, 'step': 1, 'jobName': 'Job-2', 'severe': 20, 
+    'iterations': 41, 'phase': STANDARD_PHASE, 'equilibrium': 21})
+mdb.jobs['Job-2']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 3 ratio = 5.72215E+09.', 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(STATUS, {'totalTime': 0.964453125, 
+    'attempts': ' 2U', 'timeIncrement': 0.00615234374999999, 'increment': 9, 
+    'stepTime': 0.964453125, 'step': 1, 'jobName': 'Job-2', 'severe': 10, 
+    'iterations': 10, 'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['Job-2']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 3 ratio = 21.4427E+09 .', 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 3 ratio = 4.45434E+12.', 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(STATUS, {'totalTime': 0.964453125, 
+    'attempts': ' 3U', 'timeIncrement': 0.0015380859375, 'increment': 9, 
+    'stepTime': 0.964453125, 'step': 1, 'jobName': 'Job-2', 'severe': 6, 
+    'iterations': 7, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job-2']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 3 ratio = 79.6608E+09 .', 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 9, 'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(STATUS, {'totalTime': 0.964837646484375, 
+    'attempts': 4, 'timeIncrement': 0.000384521484375, 'increment': 9, 
+    'stepTime': 0.964837646484375, 'step': 1, 'jobName': 'Job-2', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job-2']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 3 ratio = 57.2346E+09 .', 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(STATUS, {'totalTime': 0.964837646484375, 
+    'attempts': ' 1U', 'timeIncrement': 0.000576782226562499, 'increment': 10, 
+    'stepTime': 0.964837646484375, 'step': 1, 'jobName': 'Job-2', 'severe': 10, 
+    'iterations': 10, 'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['Job-2']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 3 ratio = 208.932E+09  .', 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(STATUS, {'totalTime': 0.964837646484375, 
+    'attempts': ' 2U', 'timeIncrement': 0.000144195556640625, 'increment': 10, 
+    'stepTime': 0.964837646484375, 'step': 1, 'jobName': 'Job-2', 'severe': 9, 
+    'iterations': 9, 'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['Job-2']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 3 ratio = 449.519E+09  .', 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 3 ratio = 594.025E+09  .', 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(STATUS, {'totalTime': 0.964837646484375, 
+    'attempts': ' 3U', 'timeIncrement': 3.60488891601562e-05, 'increment': 10, 
+    'stepTime': 0.964837646484375, 'step': 1, 'jobName': 'Job-2', 'severe': 4, 
+    'iterations': 4, 'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['Job-2']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 3 ratio = 229.099E+09  .', 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.53 D.O.F. 3 ratio = 249.718E+09  .', 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(ERROR, {'phase': STANDARD_PHASE, 
+    'message': 'Time increment required is less than the minimum specified', 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(STATUS, {'totalTime': 0.964837646484375, 
+    'attempts': ' 4U', 'timeIncrement': 1e-05, 'increment': 10, 
+    'stepTime': 0.964837646484375, 'step': 1, 'jobName': 'Job-2', 'severe': 10, 
+    'iterations': 11, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job-2']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 10, 'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(ERROR, {'phase': STANDARD_PHASE, 
+    'message': 'THE ANALYSIS HAS BEEN TERMINATED DUE TO PREVIOUS ERRORS. ALL OUTPUT REQUESTS HAVE BEEN WRITTEN FOR THE LAST CONVERGED INCREMENT.', 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(ABORTED, {'phase': STANDARD_PHASE, 
+    'message': 'Analysis phase failed due to errors', 'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(ERROR, {
+    'message': 'Abaqus/Standard Analysis exited with an error - Please see the  message file for possible error messages if the file exists.', 
+    'jobName': 'Job-2'})
+mdb.jobs['Job-2']._Message(JOB_ABORTED, {
+    'message': 'Abaqus/Standard Analysis exited with an error - Please see the  message file for possible error messages if the file exists.', 
+    'jobName': 'Job-2'})
+mdb.models['Model-1'].ContactProperty('Friction 2')
+mdb.models['Model-1'].interactionProperties['Friction 2'].TangentialBehavior(
+    dependencies=0, directionality=ISOTROPIC, elasticSlipStiffness=None, 
+    formulation=PENALTY, fraction=0.005, maximumElasticSlip=FRACTION, 
+    pressureDependency=OFF, shearStressLimit=None, slipRateDependency=OFF, 
+    table=((0.2, ), ), temperatureDependency=OFF)
+del mdb.models['Model-1'].interactionProperties['Friction 2']
+# Save by ck20044 on 2022_12_08-13.29.19; build 2022.HF3 2022_05_20-02.07.52 176569
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+mdb.models['Model-1'].parts['Pin/rope'].deleteMesh()
+mdb.models['Model-1'].parts['Pin/rope'].seedPart(deviationFactor=0.1, 
+    minSizeFactor=0.1, size=1.0)
+mdb.models['Model-1'].parts['Pin/rope'].seedPart(deviationFactor=0.1, 
+    minSizeFactor=0.1, size=2.0)
+mdb.models['Model-1'].parts['Pin/rope'].seedPart(deviationFactor=0.1, 
+    minSizeFactor=0.1, size=3.0)
+mdb.models['Model-1'].parts['Pin/rope'].seedPart(deviationFactor=0.1, 
+    minSizeFactor=0.1, size=4.0)
+mdb.models['Model-1'].parts['Pin/rope'].generateMesh()
+mdb.models['Model-1'].rootAssembly.regenerate()
+mdb.Job(atTime=None, contactPrint=OFF, description='', echoPrint=OFF, 
+    explicitPrecision=SINGLE, getMemoryFromAnalysis=True, historyPrint=OFF, 
+    memory=90, memoryUnits=PERCENTAGE, model='Model-1', modelPrint=OFF, 
+    multiprocessingMode=DEFAULT, name='Job-3', nodalOutputPrecision=SINGLE, 
+    numCpus=1, numGPUs=0, numThreadsPerMpiProcess=1, queue=None, resultsFormat=
+    ODB, scratch='', type=ANALYSIS, userSubroutine='', waitHours=0, 
+    waitMinutes=0)
+mdb.jobs['Job-3'].submit(consistencyChecking=OFF)
+mdb.jobs['Job-3']._Message(STARTED, {'phase': BATCHPRE_PHASE, 
+    'clientHost': 'IT077784', 'handle': 0, 'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'TRVEC LOADS DEFINED WITH DIFFERENT DIRECTION COSINES ARE DETECTED. A TRVEC LOAD CAN ONLY BE MODIFIED WHEN THE LOAD DIRECTION IS SPECIFIED IN EXACTLY THE SAME WAY AS IN THE PREVIOUS STEP.', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\Users\\ck20044\\OneDrive - University of Bristol\\Summative FEA coursewokr\\Job-3.odb', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(COMPLETED, {'phase': BATCHPRE_PHASE, 
+    'message': 'Analysis phase complete', 'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(STARTED, {'phase': STANDARD_PHASE, 
+    'clientHost': 'IT077784', 'handle': 12672, 'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(STEP, {'stepName': 'settle contact', 
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 0, 'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'Job-3', 'memory': 299.0})
+mdb.jobs['Job-3']._Message(PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 
+    'physical_memory': 16166.0, 'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(MINIMUM_MEMORY, {'minimum_memory': 52.0, 
+    'phase': STANDARD_PHASE, 'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 1, 'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(STATUS, {'totalTime': 0.1, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 1, 'stepTime': 0.1, 'step': 1, 
+    'jobName': 'Job-3', 'severe': 1, 'iterations': 2, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-3']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 2, 'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(STATUS, {'totalTime': 0.2, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 2, 'stepTime': 0.2, 'step': 1, 
+    'jobName': 'Job-3', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.34 D.O.F. 3 ratio = 4.71647E+09.', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 3, 'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(STATUS, {'totalTime': 0.35, 'attempts': 1, 
+    'timeIncrement': 0.15, 'increment': 3, 'stepTime': 0.35, 'step': 1, 
+    'jobName': 'Job-3', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.34 D.O.F. 3 ratio = 107.931E+09  .', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 4, 'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(STATUS, {'totalTime': 0.575, 'attempts': 1, 
+    'timeIncrement': 0.225, 'increment': 4, 'stepTime': 0.575, 'step': 1, 
+    'jobName': 'Job-3', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.34 D.O.F. 3 ratio = 12.8134E+12 .', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.34 D.O.F. 3 ratio = 293.456E+09  .', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.34 D.O.F. 3 ratio = 283.063E+09  .', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 5, 'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(STATUS, {'totalTime': 0.9125, 'attempts': 1, 
+    'timeIncrement': 0.3375, 'increment': 5, 'stepTime': 0.9125, 'step': 1, 
+    'jobName': 'Job-3', 'severe': 1, 'iterations': 3, 'phase': STANDARD_PHASE, 
+    'equilibrium': 2})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.34 D.O.F. 2 ratio = 7.46804E+12.', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(STATUS, {'totalTime': 0.9125, 'attempts': ' 1U', 
+    'timeIncrement': 0.0874999999999999, 'increment': 6, 'stepTime': 0.9125, 
+    'step': 1, 'jobName': 'Job-3', 'severe': 11, 'iterations': 11, 
+    'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['Job-3']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 6, 'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(STATUS, {'totalTime': 0.934375, 'attempts': 2, 
+    'timeIncrement': 0.021875, 'increment': 6, 'stepTime': 0.934375, 'step': 1, 
+    'jobName': 'Job-3', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.34 D.O.F. 3 ratio = 4.27701E+12.', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.34 D.O.F. 1 ratio = 1.58597E+12.', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.34 D.O.F. 3 ratio = 17.8343E+12 .', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.34 D.O.F. 1 ratio = 2.13387E+12.', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.34 D.O.F. 3 ratio = 27.2202E+12 .', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.34 D.O.F. 3 ratio = 4.59803E+12.', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.34 D.O.F. 3 ratio = 253.279E+09  .', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.34 D.O.F. 3 ratio = 1.18073E+12.', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 7, 'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(STATUS, {'totalTime': 0.9671875, 'attempts': 1, 
+    'timeIncrement': 0.0328125, 'increment': 7, 'stepTime': 0.9671875, 
+    'step': 1, 'jobName': 'Job-3', 'severe': 2, 'iterations': 7, 
+    'phase': STANDARD_PHASE, 'equilibrium': 5})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.34 D.O.F. 2 ratio = 378.344E+09  .', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(STATUS, {'totalTime': 0.9671875, 'attempts': ' 1U', 
+    'timeIncrement': 0.0328124999999999, 'increment': 8, 'stepTime': 0.9671875, 
+    'step': 1, 'jobName': 'Job-3', 'severe': 6, 'iterations': 6, 
+    'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.25 D.O.F. 3 ratio = 5.84461E+12.', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.25 D.O.F. 3 ratio = 7.04643E+12.', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 8, 'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(STATUS, {'totalTime': 0.975390625, 'attempts': 2, 
+    'timeIncrement': 0.00820312499999998, 'increment': 8, 
+    'stepTime': 0.975390625, 'step': 1, 'jobName': 'Job-3', 'severe': 0, 
+    'iterations': 3, 'phase': STANDARD_PHASE, 'equilibrium': 3})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.25 D.O.F. 2 ratio = 15.0521E+09 .', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(STATUS, {'totalTime': 0.975390625, 
+    'attempts': ' 1U', 'timeIncrement': 0.00820312499999998, 'increment': 9, 
+    'stepTime': 0.975390625, 'step': 1, 'jobName': 'Job-3', 'severe': 7, 
+    'iterations': 7, 'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.78 D.O.F. 1 ratio = 7.91931E+09.', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.78 D.O.F. 2 ratio = 9.84692E+09.', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.78 D.O.F. 3 ratio = 9.50778E+09.', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(STATUS, {'totalTime': 0.975390625, 
+    'attempts': ' 2U', 'timeIncrement': 0.00205078124999999, 'increment': 9, 
+    'stepTime': 0.975390625, 'step': 1, 'jobName': 'Job-3', 'severe': 11, 
+    'iterations': 11, 'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.78 D.O.F. 3 ratio = 29.4019E+09 .', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(STATUS, {'totalTime': 0.975390625, 
+    'attempts': ' 3U', 'timeIncrement': 0.000512695312499999, 'increment': 9, 
+    'stepTime': 0.975390625, 'step': 1, 'jobName': 'Job-3', 'severe': 4, 
+    'iterations': 4, 'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.5 D.O.F. 3 ratio = 57.8453E+09 .', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 9, 'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(STATUS, {'totalTime': 0.975518798828125, 
+    'attempts': 4, 'timeIncrement': 0.000128173828125, 'increment': 9, 
+    'stepTime': 0.975518798828125, 'step': 1, 'jobName': 'Job-3', 'severe': 0, 
+    'iterations': 1, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.5 D.O.F. 1 ratio = 10.1090E+09 .', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.5 D.O.F. 2 ratio = 16.3805E+09 .', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.5 D.O.F. 3 ratio = 42.0650E+09 .', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.5 D.O.F. 1 ratio = 27.4642E+09 .', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.5 D.O.F. 2 ratio = 263.158E+09  .', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.5 D.O.F. 3 ratio = 906.155E+09  .', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(STATUS, {'totalTime': 0.975518798828125, 
+    'attempts': ' 1U', 'timeIncrement': 0.000192260742187499, 'increment': 10, 
+    'stepTime': 0.975518798828125, 'step': 1, 'jobName': 'Job-3', 'severe': 10, 
+    'iterations': 10, 'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.5 D.O.F. 2 ratio = 4.52717E+09.', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.5 D.O.F. 3 ratio = 153.481E+09  .', 
+    'jobName': 'Job-3'})
+del mdb.models['Model-1'].loads['small-pressure']
+mdb.jobs['Job-3']._Message(STATUS, {'totalTime': 0.975518798828125, 
+    'attempts': ' 2U', 'timeIncrement': 4.80651855468749e-05, 'increment': 10, 
+    'stepTime': 0.975518798828125, 'step': 1, 'jobName': 'Job-3', 'severe': 8, 
+    'iterations': 8, 'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.5 D.O.F. 3 ratio = 521.364E+09  .', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.5 D.O.F. 3 ratio = 2.73438E+12.', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 10, 'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(STATUS, {'totalTime': 0.975530815124512, 
+    'attempts': 3, 'timeIncrement': 1.20162963867187e-05, 'increment': 10, 
+    'stepTime': 0.975530815124512, 'step': 1, 'jobName': 'Job-3', 'severe': 0, 
+    'iterations': 2, 'phase': STANDARD_PHASE, 'equilibrium': 2})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.5 D.O.F. 1 ratio = 10.2370E+09 .', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.5 D.O.F. 2 ratio = 16.8968E+09 .', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.5 D.O.F. 3 ratio = 410.724E+09  .', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.5 D.O.F. 1 ratio = 25.9151E+09 .', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.5 D.O.F. 2 ratio = 313.374E+09  .', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.5 D.O.F. 3 ratio = 1.57393E+12.', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(STATUS, {'totalTime': 0.975530815124512, 
+    'attempts': ' 1U', 'timeIncrement': 1.80244445800781e-05, 'increment': 11, 
+    'stepTime': 0.975530815124512, 'step': 1, 'jobName': 'Job-3', 'severe': 10, 
+    'iterations': 10, 'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.5 D.O.F. 1 ratio = 5.71133E+09.', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.5 D.O.F. 2 ratio = 9.44969E+09.', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'Solver problem. Numerical singularity when processing node PIN/ROPE-1.5 D.O.F. 3 ratio = 677.007E+09  .', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(ERROR, {'phase': STANDARD_PHASE, 
+    'message': 'Time increment required is less than the minimum specified', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(STATUS, {'totalTime': 0.975530815124512, 
+    'attempts': ' 2U', 'timeIncrement': 1e-05, 'increment': 11, 
+    'stepTime': 0.975530815124512, 'step': 1, 'jobName': 'Job-3', 'severe': 12, 
+    'iterations': 12, 'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['Job-3']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 11, 'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(ERROR, {'phase': STANDARD_PHASE, 
+    'message': 'THE ANALYSIS HAS BEEN TERMINATED DUE TO PREVIOUS ERRORS. ALL OUTPUT REQUESTS HAVE BEEN WRITTEN FOR THE LAST CONVERGED INCREMENT.', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(ABORTED, {'phase': STANDARD_PHASE, 
+    'message': 'Analysis phase failed due to errors', 'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(ERROR, {
+    'message': 'Abaqus/Standard Analysis exited with an error - Please see the  message file for possible error messages if the file exists.', 
+    'jobName': 'Job-3'})
+mdb.jobs['Job-3']._Message(JOB_ABORTED, {
+    'message': 'Abaqus/Standard Analysis exited with an error - Please see the  message file for possible error messages if the file exists.', 
+    'jobName': 'Job-3'})
+mdb.models['Model-1'].SurfaceTraction(createStepName='Settle', directionVector=
+    ((0.0, 0.0, 0.0), (0.0, 1.0, 0.0)), distributionType=UNIFORM, field='', 
+    follower=OFF, localCsys=None, magnitude=0.001, name='surf trac', region=
+    Region(
+    side1Faces=mdb.models['Model-1'].rootAssembly.instances['Pin/rope-1'].faces.getSequenceFromMask(
+    mask=('[#8 ]', ), )), traction=GENERAL)
+mdb.models['Model-1'].loads['surf trac'].setValuesInStep(magnitude=24.98, 
+    stepName='Full-Load')
+del mdb.models['Model-1'].loads['Full load surf trac']
+mdb.Job(atTime=None, contactPrint=OFF, description='', echoPrint=OFF, 
+    explicitPrecision=SINGLE, getMemoryFromAnalysis=True, historyPrint=OFF, 
+    memory=90, memoryUnits=PERCENTAGE, model='Model-1', modelPrint=OFF, 
+    multiprocessingMode=DEFAULT, name='Job-4', nodalOutputPrecision=SINGLE, 
+    numCpus=1, numGPUs=0, numThreadsPerMpiProcess=1, queue=None, resultsFormat=
+    ODB, scratch='', type=ANALYSIS, userSubroutine='', waitHours=0, 
+    waitMinutes=0)
+mdb.jobs['Job-4'].submit(consistencyChecking=OFF)
+mdb.jobs['Job-4']._Message(STARTED, {'phase': BATCHPRE_PHASE, 
+    'clientHost': 'IT077784', 'handle': 0, 'jobName': 'Job-4'})
+mdb.jobs['Job-4']._Message(ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\Users\\ck20044\\OneDrive - University of Bristol\\Summative FEA coursewokr\\Job-4.odb', 
+    'jobName': 'Job-4'})
+mdb.jobs['Job-4']._Message(COMPLETED, {'phase': BATCHPRE_PHASE, 
+    'message': 'Analysis phase complete', 'jobName': 'Job-4'})
+mdb.jobs['Job-4']._Message(STARTED, {'phase': STANDARD_PHASE, 
+    'clientHost': 'IT077784', 'handle': 12708, 'jobName': 'Job-4'})
+mdb.jobs['Job-4']._Message(STEP, {'stepName': 'settle contact', 
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'Job-4'})
+mdb.jobs['Job-4']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 0, 'jobName': 'Job-4'})
+mdb.jobs['Job-4']._Message(MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'Job-4', 'memory': 299.0})
+mdb.jobs['Job-4']._Message(PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 
+    'physical_memory': 16166.0, 'jobName': 'Job-4'})
+mdb.jobs['Job-4']._Message(MINIMUM_MEMORY, {'minimum_memory': 52.0, 
+    'phase': STANDARD_PHASE, 'jobName': 'Job-4'})
+mdb.jobs['Job-4']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 1, 'jobName': 'Job-4'})
+mdb.jobs['Job-4']._Message(STATUS, {'totalTime': 0.1, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 1, 'stepTime': 0.1, 'step': 1, 
+    'jobName': 'Job-4', 'severe': 4, 'iterations': 5, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-4']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 2, 'jobName': 'Job-4'})
+mdb.jobs['Job-4']._Message(STATUS, {'totalTime': 0.2, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 2, 'stepTime': 0.2, 'step': 1, 
+    'jobName': 'Job-4', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-4']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 3, 'jobName': 'Job-4'})
+mdb.jobs['Job-4']._Message(STATUS, {'totalTime': 0.35, 'attempts': 1, 
+    'timeIncrement': 0.15, 'increment': 3, 'stepTime': 0.35, 'step': 1, 
+    'jobName': 'Job-4', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-4']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 4, 'jobName': 'Job-4'})
+mdb.jobs['Job-4']._Message(STATUS, {'totalTime': 0.575, 'attempts': 1, 
+    'timeIncrement': 0.225, 'increment': 4, 'stepTime': 0.575, 'step': 1, 
+    'jobName': 'Job-4', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-4']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 5, 'jobName': 'Job-4'})
+mdb.jobs['Job-4']._Message(STATUS, {'totalTime': 0.9125, 'attempts': 1, 
+    'timeIncrement': 0.3375, 'increment': 5, 'stepTime': 0.9125, 'step': 1, 
+    'jobName': 'Job-4', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-4']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 6, 'jobName': 'Job-4'})
+mdb.jobs['Job-4']._Message(STATUS, {'totalTime': 1.0, 'attempts': 1, 
+    'timeIncrement': 0.0874999999999999, 'increment': 6, 'stepTime': 1.0, 
+    'step': 1, 'jobName': 'Job-4', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job-4']._Message(END_STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'Job-4'})
+mdb.jobs['Job-4']._Message(STEP, {'phase': STANDARD_PHASE, 'stepId': 2, 
+    'jobName': 'Job-4'})
+mdb.jobs['Job-4']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 0, 'jobName': 'Job-4'})
+mdb.jobs['Job-4']._Message(MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'Job-4', 'memory': 290.0})
+mdb.jobs['Job-4']._Message(PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 
+    'physical_memory': 16166.0, 'jobName': 'Job-4'})
+mdb.jobs['Job-4']._Message(MINIMUM_MEMORY, {'minimum_memory': 51.0, 
+    'phase': STANDARD_PHASE, 'jobName': 'Job-4'})
+mdb.jobs['Job-4']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 1, 'jobName': 'Job-4'})
+mdb.jobs['Job-4']._Message(STATUS, {'totalTime': 1.1, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 1, 'stepTime': 0.1, 'step': 2, 
+    'jobName': 'Job-4', 'severe': 3, 'iterations': 4, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-4']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 2, 'jobName': 'Job-4'})
+mdb.jobs['Job-4']._Message(STATUS, {'totalTime': 1.2, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 2, 'stepTime': 0.2, 'step': 2, 
+    'jobName': 'Job-4', 'severe': 1, 'iterations': 3, 'phase': STANDARD_PHASE, 
+    'equilibrium': 2})
+mdb.jobs['Job-4']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 3, 'jobName': 'Job-4'})
+mdb.jobs['Job-4']._Message(STATUS, {'totalTime': 1.35, 'attempts': 1, 
+    'timeIncrement': 0.15, 'increment': 3, 'stepTime': 0.35, 'step': 2, 
+    'jobName': 'Job-4', 'severe': 1, 'iterations': 3, 'phase': STANDARD_PHASE, 
+    'equilibrium': 2})
+mdb.jobs['Job-4']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 4, 'jobName': 'Job-4'})
+mdb.jobs['Job-4']._Message(STATUS, {'totalTime': 1.575, 'attempts': 1, 
+    'timeIncrement': 0.225, 'increment': 4, 'stepTime': 0.575, 'step': 2, 
+    'jobName': 'Job-4', 'severe': 1, 'iterations': 3, 'phase': STANDARD_PHASE, 
+    'equilibrium': 2})
+mdb.jobs['Job-4']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 5, 'jobName': 'Job-4'})
+mdb.jobs['Job-4']._Message(STATUS, {'totalTime': 1.9125, 'attempts': 1, 
+    'timeIncrement': 0.3375, 'increment': 5, 'stepTime': 0.9125, 'step': 2, 
+    'jobName': 'Job-4', 'severe': 1, 'iterations': 3, 'phase': STANDARD_PHASE, 
+    'equilibrium': 2})
+mdb.jobs['Job-4']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 6, 'jobName': 'Job-4'})
+mdb.jobs['Job-4']._Message(STATUS, {'totalTime': 2.0, 'attempts': 1, 
+    'timeIncrement': 0.0874999999999999, 'increment': 6, 'stepTime': 1.0, 
+    'step': 2, 'jobName': 'Job-4', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job-4']._Message(END_STEP, {'phase': STANDARD_PHASE, 'stepId': 2, 
+    'jobName': 'Job-4'})
+mdb.jobs['Job-4']._Message(COMPLETED, {'phase': STANDARD_PHASE, 
+    'message': 'Analysis phase complete', 'jobName': 'Job-4'})
+mdb.jobs['Job-4']._Message(JOB_COMPLETED, {'time': 'Thu Dec  8 13:39:19 2022', 
+    'jobName': 'Job-4'})
+mdb.models['Model-1'].parts['Pin/rope'].setValues(space=THREE_D, type=
+    DISCRETE_RIGID_SURFACE)
+mdb.models['Model-1'].parts['Pin/rope'].RemoveCells(cellList=
+    mdb.models['Model-1'].parts['Pin/rope'].cells.getSequenceFromMask(mask=(
+    '[#1 ]', ), ))
+mdb.models['Model-1'].parts['Pin/rope'].generateMesh()
+mdb.models['Model-1'].rootAssembly.regenerate()
+mdb.models['Model-1'].parts['Pin/rope'].ReferencePoint(point=
+    mdb.models['Model-1'].parts['Pin/rope'].InterestingPoint(
+    mdb.models['Model-1'].parts['Pin/rope'].edges[1], CENTER))
+mdb.models['Model-1'].rootAssembly.regenerate()
+mdb.Job(atTime=None, contactPrint=OFF, description='', echoPrint=OFF, 
+    explicitPrecision=SINGLE, getMemoryFromAnalysis=True, historyPrint=OFF, 
+    memory=90, memoryUnits=PERCENTAGE, model='Model-1', modelPrint=OFF, 
+    multiprocessingMode=DEFAULT, name='Job-5', nodalOutputPrecision=SINGLE, 
+    numCpus=1, numGPUs=0, numThreadsPerMpiProcess=1, queue=None, resultsFormat=
+    ODB, scratch='', type=ANALYSIS, userSubroutine='', waitHours=0, 
+    waitMinutes=0)
+mdb.jobs['Job-5'].submit(consistencyChecking=OFF)
+mdb.jobs['Job-5']._Message(STARTED, {'phase': BATCHPRE_PHASE, 
+    'clientHost': 'IT077784', 'handle': 0, 'jobName': 'Job-5'})
+mdb.jobs['Job-5']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'The general contact domain for modeling contact interactions in Abaqus/Standard has double-sided facets. Initial contact adjustments for resolving gaps and  overclosures when a surface with double-sided facets is paired with any surface having double-sided facets may be incorrect. Similarly, adjustments for double-sided surfaces crossing each other may be incorrect and no additional warnings or error messages will be issued. In all these cases, we recommend using single-sided surfaces under *CONTACT INITIALIZATION ASSIGNMENT to  handle initial adjustments more precisely and avoid  possible convergence problems.', 
+    'jobName': 'Job-5'})
+mdb.jobs['Job-5']._Message(ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\Users\\ck20044\\OneDrive - University of Bristol\\Summative FEA coursewokr\\Job-5.odb', 
+    'jobName': 'Job-5'})
+mdb.jobs['Job-5']._Message(COMPLETED, {'phase': BATCHPRE_PHASE, 
+    'message': 'Analysis phase complete', 'jobName': 'Job-5'})
+mdb.jobs['Job-5']._Message(STARTED, {'phase': STANDARD_PHASE, 
+    'clientHost': 'IT077784', 'handle': 6708, 'jobName': 'Job-5'})
+mdb.jobs['Job-5']._Message(STEP, {'stepName': 'settle contact', 
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'Job-5'})
+mdb.jobs['Job-5']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 0, 'jobName': 'Job-5'})
+mdb.jobs['Job-5']._Message(MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'Job-5', 'memory': 258.0})
+mdb.jobs['Job-5']._Message(PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 
+    'physical_memory': 16166.0, 'jobName': 'Job-5'})
+mdb.jobs['Job-5']._Message(MINIMUM_MEMORY, {'minimum_memory': 46.0, 
+    'phase': STANDARD_PHASE, 'jobName': 'Job-5'})
+mdb.jobs['Job-5']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 1, 'jobName': 'Job-5'})
+mdb.jobs['Job-5']._Message(STATUS, {'totalTime': 0.1, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 1, 'stepTime': 0.1, 'step': 1, 
+    'jobName': 'Job-5', 'severe': 2, 'iterations': 3, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-5']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 2, 'jobName': 'Job-5'})
+mdb.jobs['Job-5']._Message(STATUS, {'totalTime': 0.2, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 2, 'stepTime': 0.2, 'step': 1, 
+    'jobName': 'Job-5', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-5']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 3, 'jobName': 'Job-5'})
+mdb.jobs['Job-5']._Message(STATUS, {'totalTime': 0.35, 'attempts': 1, 
+    'timeIncrement': 0.15, 'increment': 3, 'stepTime': 0.35, 'step': 1, 
+    'jobName': 'Job-5', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-5']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 4, 'jobName': 'Job-5'})
+mdb.jobs['Job-5']._Message(STATUS, {'totalTime': 0.575, 'attempts': 1, 
+    'timeIncrement': 0.225, 'increment': 4, 'stepTime': 0.575, 'step': 1, 
+    'jobName': 'Job-5', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-5']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 5, 'jobName': 'Job-5'})
+mdb.jobs['Job-5']._Message(STATUS, {'totalTime': 0.9125, 'attempts': 1, 
+    'timeIncrement': 0.3375, 'increment': 5, 'stepTime': 0.9125, 'step': 1, 
+    'jobName': 'Job-5', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-5']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 6, 'jobName': 'Job-5'})
+mdb.jobs['Job-5']._Message(STATUS, {'totalTime': 1.0, 'attempts': 1, 
+    'timeIncrement': 0.0874999999999999, 'increment': 6, 'stepTime': 1.0, 
+    'step': 1, 'jobName': 'Job-5', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job-5']._Message(END_STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'Job-5'})
+mdb.jobs['Job-5']._Message(STEP, {'phase': STANDARD_PHASE, 'stepId': 2, 
+    'jobName': 'Job-5'})
+mdb.jobs['Job-5']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 0, 'jobName': 'Job-5'})
+mdb.jobs['Job-5']._Message(MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'Job-5', 'memory': 257.0})
+mdb.jobs['Job-5']._Message(PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 
+    'physical_memory': 16166.0, 'jobName': 'Job-5'})
+mdb.jobs['Job-5']._Message(MINIMUM_MEMORY, {'minimum_memory': 46.0, 
+    'phase': STANDARD_PHASE, 'jobName': 'Job-5'})
+mdb.jobs['Job-5']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 1, 'jobName': 'Job-5'})
+mdb.jobs['Job-5']._Message(STATUS, {'totalTime': 1.1, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 1, 'stepTime': 0.1, 'step': 2, 
+    'jobName': 'Job-5', 'severe': 0, 'iterations': 4, 'phase': STANDARD_PHASE, 
+    'equilibrium': 4})
+mdb.jobs['Job-5']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 2, 'jobName': 'Job-5'})
+mdb.jobs['Job-5']._Message(STATUS, {'totalTime': 1.2, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 2, 'stepTime': 0.2, 'step': 2, 
+    'jobName': 'Job-5', 'severe': 0, 'iterations': 2, 'phase': STANDARD_PHASE, 
+    'equilibrium': 2})
+mdb.jobs['Job-5']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 3, 'jobName': 'Job-5'})
+mdb.jobs['Job-5']._Message(STATUS, {'totalTime': 1.35, 'attempts': 1, 
+    'timeIncrement': 0.15, 'increment': 3, 'stepTime': 0.35, 'step': 2, 
+    'jobName': 'Job-5', 'severe': 0, 'iterations': 3, 'phase': STANDARD_PHASE, 
+    'equilibrium': 3})
+mdb.jobs['Job-5']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 4, 'jobName': 'Job-5'})
+mdb.jobs['Job-5']._Message(STATUS, {'totalTime': 1.575, 'attempts': 1, 
+    'timeIncrement': 0.225, 'increment': 4, 'stepTime': 0.575, 'step': 2, 
+    'jobName': 'Job-5', 'severe': 0, 'iterations': 3, 'phase': STANDARD_PHASE, 
+    'equilibrium': 3})
+mdb.jobs['Job-5']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 5, 'jobName': 'Job-5'})
+mdb.jobs['Job-5']._Message(STATUS, {'totalTime': 1.9125, 'attempts': 1, 
+    'timeIncrement': 0.3375, 'increment': 5, 'stepTime': 0.9125, 'step': 2, 
+    'jobName': 'Job-5', 'severe': 0, 'iterations': 3, 'phase': STANDARD_PHASE, 
+    'equilibrium': 3})
+mdb.jobs['Job-5']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 6, 'jobName': 'Job-5'})
+mdb.jobs['Job-5']._Message(STATUS, {'totalTime': 2.0, 'attempts': 1, 
+    'timeIncrement': 0.0874999999999999, 'increment': 6, 'stepTime': 1.0, 
+    'step': 2, 'jobName': 'Job-5', 'severe': 0, 'iterations': 3, 
+    'phase': STANDARD_PHASE, 'equilibrium': 3})
+mdb.jobs['Job-5']._Message(END_STEP, {'phase': STANDARD_PHASE, 'stepId': 2, 
+    'jobName': 'Job-5'})
+mdb.jobs['Job-5']._Message(COMPLETED, {'phase': STANDARD_PHASE, 
+    'message': 'Analysis phase complete', 'jobName': 'Job-5'})
+mdb.jobs['Job-5']._Message(JOB_COMPLETED, {'time': 'Thu Dec  8 13:43:19 2022', 
+    'jobName': 'Job-5'})
+mdb.models['Model-1'].ConstrainedSketch(name='__edit__', objectToCopy=
+    mdb.models['Model-1'].parts['Pin/rope'].features['Solid extrude-1'].sketch)
+mdb.models['Model-1'].parts['Pin/rope'].projectReferencesOntoSketch(filter=
+    COPLANAR_EDGES, sketch=mdb.models['Model-1'].sketches['__edit__'], 
+    upToFeature=
+    mdb.models['Model-1'].parts['Pin/rope'].features['Solid extrude-1'])
+del mdb.models['Model-1'].sketches['__edit__']
+mdb.models['Model-1'].loads['surf trac'].setValuesInStep(magnitude=57.65, 
+    stepName='Full-Load')
+mdb.Job(atTime=None, contactPrint=OFF, description='', echoPrint=OFF, 
+    explicitPrecision=SINGLE, getMemoryFromAnalysis=True, historyPrint=OFF, 
+    memory=90, memoryUnits=PERCENTAGE, model='Model-1', modelPrint=OFF, 
+    multiprocessingMode=DEFAULT, name='Job-6', nodalOutputPrecision=SINGLE, 
+    numCpus=1, numGPUs=0, numThreadsPerMpiProcess=1, queue=None, resultsFormat=
+    ODB, scratch='', type=ANALYSIS, userSubroutine='', waitHours=0, 
+    waitMinutes=0)
+mdb.jobs['Job-6'].submit(consistencyChecking=OFF)
+mdb.jobs['Job-6']._Message(STARTED, {'phase': BATCHPRE_PHASE, 
+    'clientHost': 'IT077784', 'handle': 0, 'jobName': 'Job-6'})
+mdb.jobs['Job-6']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'The general contact domain for modeling contact interactions in Abaqus/Standard has double-sided facets. Initial contact adjustments for resolving gaps and  overclosures when a surface with double-sided facets is paired with any surface having double-sided facets may be incorrect. Similarly, adjustments for double-sided surfaces crossing each other may be incorrect and no additional warnings or error messages will be issued. In all these cases, we recommend using single-sided surfaces under *CONTACT INITIALIZATION ASSIGNMENT to  handle initial adjustments more precisely and avoid  possible convergence problems.', 
+    'jobName': 'Job-6'})
+mdb.jobs['Job-6']._Message(ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\Users\\ck20044\\OneDrive - University of Bristol\\Summative FEA coursewokr\\Job-6.odb', 
+    'jobName': 'Job-6'})
+mdb.jobs['Job-6']._Message(COMPLETED, {'phase': BATCHPRE_PHASE, 
+    'message': 'Analysis phase complete', 'jobName': 'Job-6'})
+mdb.jobs['Job-6']._Message(STARTED, {'phase': STANDARD_PHASE, 
+    'clientHost': 'IT077784', 'handle': 4928, 'jobName': 'Job-6'})
+mdb.jobs['Job-6']._Message(STEP, {'stepName': 'settle contact', 
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'Job-6'})
+mdb.jobs['Job-6']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 0, 'jobName': 'Job-6'})
+mdb.jobs['Job-6']._Message(MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'Job-6', 'memory': 258.0})
+mdb.jobs['Job-6']._Message(PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 
+    'physical_memory': 16166.0, 'jobName': 'Job-6'})
+mdb.jobs['Job-6']._Message(MINIMUM_MEMORY, {'minimum_memory': 46.0, 
+    'phase': STANDARD_PHASE, 'jobName': 'Job-6'})
+mdb.jobs['Job-6']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 1, 'jobName': 'Job-6'})
+mdb.jobs['Job-6']._Message(STATUS, {'totalTime': 0.1, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 1, 'stepTime': 0.1, 'step': 1, 
+    'jobName': 'Job-6', 'severe': 2, 'iterations': 3, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-6']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 2, 'jobName': 'Job-6'})
+mdb.jobs['Job-6']._Message(STATUS, {'totalTime': 0.2, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 2, 'stepTime': 0.2, 'step': 1, 
+    'jobName': 'Job-6', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-6']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 3, 'jobName': 'Job-6'})
+mdb.jobs['Job-6']._Message(STATUS, {'totalTime': 0.35, 'attempts': 1, 
+    'timeIncrement': 0.15, 'increment': 3, 'stepTime': 0.35, 'step': 1, 
+    'jobName': 'Job-6', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-6']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 4, 'jobName': 'Job-6'})
+mdb.jobs['Job-6']._Message(STATUS, {'totalTime': 0.575, 'attempts': 1, 
+    'timeIncrement': 0.225, 'increment': 4, 'stepTime': 0.575, 'step': 1, 
+    'jobName': 'Job-6', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-6']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 5, 'jobName': 'Job-6'})
+mdb.jobs['Job-6']._Message(STATUS, {'totalTime': 0.9125, 'attempts': 1, 
+    'timeIncrement': 0.3375, 'increment': 5, 'stepTime': 0.9125, 'step': 1, 
+    'jobName': 'Job-6', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-6']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 6, 'jobName': 'Job-6'})
+mdb.jobs['Job-6']._Message(STATUS, {'totalTime': 1.0, 'attempts': 1, 
+    'timeIncrement': 0.0874999999999999, 'increment': 6, 'stepTime': 1.0, 
+    'step': 1, 'jobName': 'Job-6', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job-6']._Message(END_STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'Job-6'})
+mdb.jobs['Job-6']._Message(STEP, {'phase': STANDARD_PHASE, 'stepId': 2, 
+    'jobName': 'Job-6'})
+mdb.jobs['Job-6']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 0, 'jobName': 'Job-6'})
+mdb.jobs['Job-6']._Message(MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'Job-6', 'memory': 257.0})
+mdb.jobs['Job-6']._Message(PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 
+    'physical_memory': 16166.0, 'jobName': 'Job-6'})
+mdb.jobs['Job-6']._Message(MINIMUM_MEMORY, {'minimum_memory': 46.0, 
+    'phase': STANDARD_PHASE, 'jobName': 'Job-6'})
+mdb.jobs['Job-6']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 1, 'jobName': 'Job-6'})
+mdb.jobs['Job-6']._Message(STATUS, {'totalTime': 1.1, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 1, 'stepTime': 0.1, 'step': 2, 
+    'jobName': 'Job-6', 'severe': 0, 'iterations': 4, 'phase': STANDARD_PHASE, 
+    'equilibrium': 4})
+mdb.jobs['Job-6']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 2, 'jobName': 'Job-6'})
+mdb.jobs['Job-6']._Message(STATUS, {'totalTime': 1.2, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 2, 'stepTime': 0.2, 'step': 2, 
+    'jobName': 'Job-6', 'severe': 0, 'iterations': 3, 'phase': STANDARD_PHASE, 
+    'equilibrium': 3})
+mdb.jobs['Job-6']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 3, 'jobName': 'Job-6'})
+mdb.jobs['Job-6']._Message(STATUS, {'totalTime': 1.35, 'attempts': 1, 
+    'timeIncrement': 0.15, 'increment': 3, 'stepTime': 0.35, 'step': 2, 
+    'jobName': 'Job-6', 'severe': 0, 'iterations': 3, 'phase': STANDARD_PHASE, 
+    'equilibrium': 3})
+mdb.jobs['Job-6']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 4, 'jobName': 'Job-6'})
+mdb.jobs['Job-6']._Message(STATUS, {'totalTime': 1.575, 'attempts': 1, 
+    'timeIncrement': 0.225, 'increment': 4, 'stepTime': 0.575, 'step': 2, 
+    'jobName': 'Job-6', 'severe': 0, 'iterations': 3, 'phase': STANDARD_PHASE, 
+    'equilibrium': 3})
+mdb.jobs['Job-6']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 5, 'jobName': 'Job-6'})
+mdb.jobs['Job-6']._Message(STATUS, {'totalTime': 1.9125, 'attempts': 1, 
+    'timeIncrement': 0.3375, 'increment': 5, 'stepTime': 0.9125, 'step': 2, 
+    'jobName': 'Job-6', 'severe': 0, 'iterations': 3, 'phase': STANDARD_PHASE, 
+    'equilibrium': 3})
+mdb.jobs['Job-6']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 6, 'jobName': 'Job-6'})
+mdb.jobs['Job-6']._Message(STATUS, {'totalTime': 2.0, 'attempts': 1, 
+    'timeIncrement': 0.0874999999999999, 'increment': 6, 'stepTime': 1.0, 
+    'step': 2, 'jobName': 'Job-6', 'severe': 0, 'iterations': 3, 
+    'phase': STANDARD_PHASE, 'equilibrium': 3})
+mdb.jobs['Job-6']._Message(END_STEP, {'phase': STANDARD_PHASE, 'stepId': 2, 
+    'jobName': 'Job-6'})
+mdb.jobs['Job-6']._Message(COMPLETED, {'phase': STANDARD_PHASE, 
+    'message': 'Analysis phase complete', 'jobName': 'Job-6'})
+mdb.jobs['Job-6']._Message(JOB_COMPLETED, {'time': 'Thu Dec  8 13:51:06 2022', 
+    'jobName': 'Job-6'})
+# Save by ck20044 on 2022_12_08-13.55.40; build 2022.HF3 2022_05_20-02.07.52 176569
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+mdb.models['Model-1'].parts['GCU Lifting Lug v1'].deleteMesh()
+mdb.models['Model-1'].parts['GCU Lifting Lug v1'].seedPart(deviationFactor=0.1, 
+    minSizeFactor=0.1, size=1.0)
+mdb.models['Model-1'].parts['GCU Lifting Lug v1'].seedPart(deviationFactor=0.1, 
+    minSizeFactor=0.1, size=10.0)
+mdb.models['Model-1'].parts['GCU Lifting Lug v1'].seedPart(deviationFactor=0.1, 
+    minSizeFactor=0.1, size=1.0)
+mdb.models['Model-1'].parts['GCU Lifting Lug v1'].generateMesh()
+mdb.models['Model-1'].rootAssembly.regenerate()
+del mdb.jobs['Job-6']
+del mdb.jobs['Job-1']
+del mdb.jobs['Job-2']
+del mdb.jobs['Job-3']
+del mdb.jobs['Job-4']
+del mdb.jobs['Job-5']
+mdb.Job(atTime=None, contactPrint=OFF, description='', echoPrint=OFF, 
+    explicitPrecision=SINGLE, getMemoryFromAnalysis=True, historyPrint=OFF, 
+    memory=90, memoryUnits=PERCENTAGE, model='Model-1', modelPrint=OFF, 
+    multiprocessingMode=DEFAULT, name='Seed-1', nodalOutputPrecision=SINGLE, 
+    numCpus=1, numGPUs=0, numThreadsPerMpiProcess=1, queue=None, resultsFormat=
+    ODB, scratch='', type=ANALYSIS, userSubroutine='', waitHours=0, 
+    waitMinutes=0)
+mdb.jobs['Seed-1'].submit(consistencyChecking=OFF)
+mdb.jobs['Seed-1']._Message(STARTED, {'phase': BATCHPRE_PHASE, 
+    'clientHost': 'IT077784', 'handle': 0, 'jobName': 'Seed-1'})
+mdb.jobs['Seed-1']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'The general contact domain for modeling contact interactions in Abaqus/Standard has double-sided facets. Initial contact adjustments for resolving gaps and  overclosures when a surface with double-sided facets is paired with any surface having double-sided facets may be incorrect. Similarly, adjustments for double-sided surfaces crossing each other may be incorrect and no additional warnings or error messages will be issued. In all these cases, we recommend using single-sided surfaces under *CONTACT INITIALIZATION ASSIGNMENT to  handle initial adjustments more precisely and avoid  possible convergence problems.', 
+    'jobName': 'Seed-1'})
+mdb.jobs['Seed-1']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'OVERCONSTRAINT CHECKS: THERE ARE 12444 BOUNDARY CONDITIONS SPECIFIED IN THIS MODEL. OVERCONSTRAINT CHECKS FOR BOUNDARY CONDITIONS SPECIFIED ON SECONDARY NODES OF RIGID BODIES, OF *TIE OPTIONS, OR OF *COUPLING OPTIONS REQUIRE 5 MB OF MEMORY. IF THIS IS A PROBLEM, PLEASE TURN OFF OVERCONSTRAINT CHECKS USING *CONSTRAINT CONTROLS, NO CHECKS or INCREASE THE MEMORY USED BY THE PRE-PROCESSOR.', 
+    'jobName': 'Seed-1'})
+mdb.jobs['Seed-1']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'OVERCONSTRAINT CHECKS: THERE ARE 12444 BOUNDARY CONDITIONS SPECIFIED IN THIS MODEL. OVERCONSTRAINT CHECKS FOR BOUNDARY CONDITIONS SPECIFIED ON SECONDARY NODES OF RIGID BODIES, OF *TIE OPTIONS, OR OF *COUPLING OPTIONS REQUIRE 5 MB OF MEMORY. IF THIS IS A PROBLEM, PLEASE TURN OFF OVERCONSTRAINT CHECKS USING *CONSTRAINT CONTROLS, NO CHECKS or INCREASE THE MEMORY USED BY THE PRE-PROCESSOR.', 
+    'jobName': 'Seed-1'})
+mdb.jobs['Seed-1']._Message(ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\Users\\ck20044\\OneDrive - University of Bristol\\Summative FEA coursewokr\\Seed-1.odb', 
+    'jobName': 'Seed-1'})
+mdb.jobs['Seed-1']._Message(COMPLETED, {'phase': BATCHPRE_PHASE, 
+    'message': 'Analysis phase complete', 'jobName': 'Seed-1'})
+mdb.jobs['Seed-1']._Message(STARTED, {'phase': STANDARD_PHASE, 
+    'clientHost': 'IT077784', 'handle': 8940, 'jobName': 'Seed-1'})
+mdb.jobs['Seed-1']._Message(STEP, {'stepName': 'settle contact', 
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'Seed-1'})
+mdb.jobs['Seed-1']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 0, 'jobName': 'Seed-1'})
+mdb.jobs['Seed-1']._Message(MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'Seed-1', 'memory': 14549.0})
+mdb.jobs['Seed-1']._Message(PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 
+    'physical_memory': 16166.0, 'jobName': 'Seed-1'})
+mdb.jobs['Seed-1']._Message(MINIMUM_MEMORY, {'minimum_memory': 3282.0, 
+    'phase': STANDARD_PHASE, 'jobName': 'Seed-1'})
+mdb.models['Model-1'].parts['GCU Lifting Lug v1'].deleteMesh()
+mdb.models['Model-1'].parts['GCU Lifting Lug v1'].seedPart(deviationFactor=0.1, 
+    minSizeFactor=0.1, size=2.0)
+mdb.models['Model-1'].parts['GCU Lifting Lug v1'].generateMesh()
+mdb.models['Model-1'].rootAssembly.regenerate()
+mdb.Job(atTime=None, contactPrint=OFF, description='', echoPrint=OFF, 
+    explicitPrecision=SINGLE, getMemoryFromAnalysis=True, historyPrint=OFF, 
+    memory=90, memoryUnits=PERCENTAGE, model='Model-1', modelPrint=OFF, 
+    multiprocessingMode=DEFAULT, name='Seed-2', nodalOutputPrecision=SINGLE, 
+    numCpus=1, numGPUs=0, numThreadsPerMpiProcess=1, queue=None, resultsFormat=
+    ODB, scratch='', type=ANALYSIS, userSubroutine='', waitHours=0, 
+    waitMinutes=0)
+mdb.jobs['Seed-2'].submit(consistencyChecking=OFF)
+mdb.jobs['Seed-2']._Message(STARTED, {'phase': BATCHPRE_PHASE, 
+    'clientHost': 'IT077784', 'handle': 0, 'jobName': 'Seed-2'})
+mdb.jobs['Seed-2']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'The general contact domain for modeling contact interactions in Abaqus/Standard has double-sided facets. Initial contact adjustments for resolving gaps and  overclosures when a surface with double-sided facets is paired with any surface having double-sided facets may be incorrect. Similarly, adjustments for double-sided surfaces crossing each other may be incorrect and no additional warnings or error messages will be issued. In all these cases, we recommend using single-sided surfaces under *CONTACT INITIALIZATION ASSIGNMENT to  handle initial adjustments more precisely and avoid  possible convergence problems.', 
+    'jobName': 'Seed-2'})
+mdb.jobs['Seed-2']._Message(ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\Users\\ck20044\\OneDrive - University of Bristol\\Summative FEA coursewokr\\Seed-2.odb', 
+    'jobName': 'Seed-2'})
+mdb.jobs['Seed-2']._Message(COMPLETED, {'phase': BATCHPRE_PHASE, 
+    'message': 'Analysis phase complete', 'jobName': 'Seed-2'})
+mdb.jobs['Seed-2']._Message(STARTED, {'phase': STANDARD_PHASE, 
+    'clientHost': 'IT077784', 'handle': 14024, 'jobName': 'Seed-2'})
+mdb.jobs['Seed-2']._Message(STEP, {'stepName': 'settle contact', 
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'Seed-2'})
+mdb.jobs['Seed-2']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 0, 'jobName': 'Seed-2'})
+mdb.jobs['Seed-2']._Message(MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'Seed-2', 'memory': 3270.0})
+mdb.jobs['Seed-2']._Message(PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 
+    'physical_memory': 16166.0, 'jobName': 'Seed-2'})
+mdb.jobs['Seed-2']._Message(MINIMUM_MEMORY, {'minimum_memory': 412.0, 
+    'phase': STANDARD_PHASE, 'jobName': 'Seed-2'})
+mdb.jobs['Seed-2']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'The system matrix has 1 negative eigenvalues.', 
+    'jobName': 'Seed-2'})
+mdb.jobs['Seed-2']._Message(ERROR, {'phase': STANDARD_PHASE, 
+    'message': 'Process terminated by external request (SIGTERM or SIGINT received).', 
+    'jobName': 'Seed-2'})
+mdb.jobs['Seed-2']._Message(INTERRUPTED, {'phase': STANDARD_PHASE, 
+    'message': 'Analysis interrupted by external signal', 'jobName': 'Seed-2'})
+mdb.jobs['Seed-2']._Message(ERROR, {
+    'message': 'Abaqus/Standard Analysis exited with an error - Please see the  message file for possible error messages if the file exists.', 
+    'jobName': 'Seed-2'})
+mdb.jobs['Seed-2']._Message(JOB_ABORTED, {
+    'message': 'Abaqus/Standard Analysis exited with an error - Please see the  message file for possible error messages if the file exists.', 
+    'jobName': 'Seed-2'})
+mdb.Job(atTime=None, contactPrint=OFF, description='', echoPrint=OFF, 
+    explicitPrecision=SINGLE, getMemoryFromAnalysis=True, historyPrint=OFF, 
+    memory=90, memoryUnits=PERCENTAGE, model='Model-1', modelPrint=OFF, 
+    multiprocessingMode=DEFAULT, name='Seed-22', nodalOutputPrecision=SINGLE, 
+    numCpus=1, numGPUs=0, numThreadsPerMpiProcess=1, queue=None, resultsFormat=
+    ODB, scratch='', type=ANALYSIS, userSubroutine='', waitHours=0, 
+    waitMinutes=0)
+mdb.jobs['Seed-22'].submit(consistencyChecking=OFF)
+mdb.jobs['Seed-22']._Message(STARTED, {'phase': BATCHPRE_PHASE, 
+    'clientHost': 'IT077784', 'handle': 0, 'jobName': 'Seed-22'})
+mdb.jobs['Seed-22']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'The general contact domain for modeling contact interactions in Abaqus/Standard has double-sided facets. Initial contact adjustments for resolving gaps and  overclosures when a surface with double-sided facets is paired with any surface having double-sided facets may be incorrect. Similarly, adjustments for double-sided surfaces crossing each other may be incorrect and no additional warnings or error messages will be issued. In all these cases, we recommend using single-sided surfaces under *CONTACT INITIALIZATION ASSIGNMENT to  handle initial adjustments more precisely and avoid  possible convergence problems.', 
+    'jobName': 'Seed-22'})
+mdb.jobs['Seed-22']._Message(ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\Users\\ck20044\\OneDrive - University of Bristol\\Summative FEA coursewokr\\Seed-22.odb', 
+    'jobName': 'Seed-22'})
+mdb.jobs['Seed-22']._Message(COMPLETED, {'phase': BATCHPRE_PHASE, 
+    'message': 'Analysis phase complete', 'jobName': 'Seed-22'})
+mdb.jobs['Seed-22']._Message(STARTED, {'phase': STANDARD_PHASE, 
+    'clientHost': 'IT077784', 'handle': 10356, 'jobName': 'Seed-22'})
+mdb.jobs['Seed-22']._Message(STEP, {'stepName': 'settle contact', 
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'Seed-22'})
+mdb.jobs['Seed-22']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 0, 'jobName': 'Seed-22'})
+mdb.jobs['Seed-22']._Message(MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'Seed-22', 'memory': 3270.0})
+mdb.jobs['Seed-22']._Message(PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 
+    'physical_memory': 16166.0, 'jobName': 'Seed-22'})
+mdb.jobs['Seed-22']._Message(MINIMUM_MEMORY, {'minimum_memory': 412.0, 
+    'phase': STANDARD_PHASE, 'jobName': 'Seed-22'})
+mdb.jobs['Seed-22']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'The system matrix has 1 negative eigenvalues.', 
+    'jobName': 'Seed-22'})
+mdb.jobs['Seed-22']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 1, 'jobName': 'Seed-22'})
+mdb.jobs['Seed-22']._Message(STATUS, {'totalTime': 0.1, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 1, 'stepTime': 0.1, 'step': 1, 
+    'jobName': 'Seed-22', 'severe': 0, 'iterations': 2, 
+    'phase': STANDARD_PHASE, 'equilibrium': 2})
+mdb.jobs['Seed-22']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'The system matrix has 1 negative eigenvalues.', 
+    'jobName': 'Seed-22'})
+mdb.jobs['Seed-22']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'The system matrix has 1 negative eigenvalues.', 
+    'jobName': 'Seed-22'})
+mdb.jobs['Seed-22']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 2, 'jobName': 'Seed-22'})
+mdb.jobs['Seed-22']._Message(STATUS, {'totalTime': 0.2, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 2, 'stepTime': 0.2, 'step': 1, 
+    'jobName': 'Seed-22', 'severe': 0, 'iterations': 2, 
+    'phase': STANDARD_PHASE, 'equilibrium': 2})
+mdb.jobs['Seed-22']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'The system matrix has 1 negative eigenvalues.', 
+    'jobName': 'Seed-22'})
+mdb.jobs['Seed-22']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 3, 'jobName': 'Seed-22'})
+mdb.jobs['Seed-22']._Message(STATUS, {'totalTime': 0.35, 'attempts': 1, 
+    'timeIncrement': 0.15, 'increment': 3, 'stepTime': 0.35, 'step': 1, 
+    'jobName': 'Seed-22', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Seed-22']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'The system matrix has 1 negative eigenvalues.', 
+    'jobName': 'Seed-22'})
+mdb.jobs['Seed-22']._Message(ERROR, {'phase': STANDARD_PHASE, 
+    'message': 'Process terminated by external request (SIGTERM or SIGINT received).', 
+    'jobName': 'Seed-22'})
+mdb.jobs['Seed-22']._Message(INTERRUPTED, {'phase': STANDARD_PHASE, 
+    'message': 'Analysis interrupted by external signal', 
+    'jobName': 'Seed-22'})
+mdb.jobs['Seed-22']._Message(ERROR, {
+    'message': 'Abaqus/Standard Analysis exited with an error - Please see the  message file for possible error messages if the file exists.', 
+    'jobName': 'Seed-22'})
+mdb.jobs['Seed-22']._Message(JOB_ABORTED, {
+    'message': 'Abaqus/Standard Analysis exited with an error - Please see the  message file for possible error messages if the file exists.', 
+    'jobName': 'Seed-22'})
+mdb.models['Model-1'].parts['GCU Lifting Lug v1'].deleteMesh()
+mdb.models['Model-1'].parts['GCU Lifting Lug v1'].seedPart(deviationFactor=0.1, 
+    minSizeFactor=0.1, size=10.0)
+mdb.models['Model-1'].parts['GCU Lifting Lug v1'].generateMesh()
+mdb.models['Model-1'].rootAssembly.regenerate()
+mdb.Job(atTime=None, contactPrint=OFF, description='', echoPrint=OFF, 
+    explicitPrecision=SINGLE, getMemoryFromAnalysis=True, historyPrint=OFF, 
+    memory=90, memoryUnits=PERCENTAGE, model='Model-1', modelPrint=OFF, 
+    multiprocessingMode=DEFAULT, name='Seed-10', nodalOutputPrecision=SINGLE, 
+    numCpus=1, numGPUs=0, numThreadsPerMpiProcess=1, queue=None, resultsFormat=
+    ODB, scratch='', type=ANALYSIS, userSubroutine='', waitHours=0, 
+    waitMinutes=0)
+mdb.jobs['Seed-10'].submit(consistencyChecking=OFF)
+mdb.jobs['Seed-10']._Message(STARTED, {'phase': BATCHPRE_PHASE, 
+    'clientHost': 'IT077784', 'handle': 0, 'jobName': 'Seed-10'})
+mdb.jobs['Seed-10']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'The general contact domain for modeling contact interactions in Abaqus/Standard has double-sided facets. Initial contact adjustments for resolving gaps and  overclosures when a surface with double-sided facets is paired with any surface having double-sided facets may be incorrect. Similarly, adjustments for double-sided surfaces crossing each other may be incorrect and no additional warnings or error messages will be issued. In all these cases, we recommend using single-sided surfaces under *CONTACT INITIALIZATION ASSIGNMENT to  handle initial adjustments more precisely and avoid  possible convergence problems.', 
+    'jobName': 'Seed-10'})
+mdb.jobs['Seed-10']._Message(ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\Users\\ck20044\\OneDrive - University of Bristol\\Summative FEA coursewokr\\Seed-10.odb', 
+    'jobName': 'Seed-10'})
+mdb.jobs['Seed-10']._Message(COMPLETED, {'phase': BATCHPRE_PHASE, 
+    'message': 'Analysis phase complete', 'jobName': 'Seed-10'})
+mdb.jobs['Seed-10']._Message(STARTED, {'phase': STANDARD_PHASE, 
+    'clientHost': 'IT077784', 'handle': 9744, 'jobName': 'Seed-10'})
+mdb.jobs['Seed-10']._Message(STEP, {'stepName': 'settle contact', 
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'Seed-10'})
+mdb.jobs['Seed-10']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 0, 'jobName': 'Seed-10'})
+mdb.jobs['Seed-10']._Message(MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'Seed-10', 'memory': 33.0})
+mdb.jobs['Seed-10']._Message(PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 
+    'physical_memory': 16166.0, 'jobName': 'Seed-10'})
+mdb.jobs['Seed-10']._Message(MINIMUM_MEMORY, {'minimum_memory': 20.0, 
+    'phase': STANDARD_PHASE, 'jobName': 'Seed-10'})
+mdb.jobs['Seed-10']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 1, 'jobName': 'Seed-10'})
+mdb.jobs['Seed-10']._Message(STATUS, {'totalTime': 0.1, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 1, 'stepTime': 0.1, 'step': 1, 
+    'jobName': 'Seed-10', 'severe': 3, 'iterations': 4, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Seed-10']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 2, 'jobName': 'Seed-10'})
+mdb.jobs['Seed-10']._Message(STATUS, {'totalTime': 0.2, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 2, 'stepTime': 0.2, 'step': 1, 
+    'jobName': 'Seed-10', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Seed-10']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 3, 'jobName': 'Seed-10'})
+mdb.jobs['Seed-10']._Message(STATUS, {'totalTime': 0.35, 'attempts': 1, 
+    'timeIncrement': 0.15, 'increment': 3, 'stepTime': 0.35, 'step': 1, 
+    'jobName': 'Seed-10', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Seed-10']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 4, 'jobName': 'Seed-10'})
+mdb.jobs['Seed-10']._Message(STATUS, {'totalTime': 0.575, 'attempts': 1, 
+    'timeIncrement': 0.225, 'increment': 4, 'stepTime': 0.575, 'step': 1, 
+    'jobName': 'Seed-10', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Seed-10']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 5, 'jobName': 'Seed-10'})
+mdb.jobs['Seed-10']._Message(STATUS, {'totalTime': 0.9125, 'attempts': 1, 
+    'timeIncrement': 0.3375, 'increment': 5, 'stepTime': 0.9125, 'step': 1, 
+    'jobName': 'Seed-10', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Seed-10']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 6, 'jobName': 'Seed-10'})
+mdb.jobs['Seed-10']._Message(STATUS, {'totalTime': 1.0, 'attempts': 1, 
+    'timeIncrement': 0.0874999999999999, 'increment': 6, 'stepTime': 1.0, 
+    'step': 1, 'jobName': 'Seed-10', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Seed-10']._Message(END_STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'Seed-10'})
+mdb.jobs['Seed-10']._Message(STEP, {'phase': STANDARD_PHASE, 'stepId': 2, 
+    'jobName': 'Seed-10'})
+mdb.jobs['Seed-10']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 0, 'jobName': 'Seed-10'})
+mdb.jobs['Seed-10']._Message(MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'Seed-10', 'memory': 33.0})
+mdb.jobs['Seed-10']._Message(PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 
+    'physical_memory': 16166.0, 'jobName': 'Seed-10'})
+mdb.jobs['Seed-10']._Message(MINIMUM_MEMORY, {'minimum_memory': 19.0, 
+    'phase': STANDARD_PHASE, 'jobName': 'Seed-10'})
+mdb.jobs['Seed-10']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 1, 'jobName': 'Seed-10'})
+mdb.jobs['Seed-10']._Message(STATUS, {'totalTime': 1.1, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 1, 'stepTime': 0.1, 'step': 2, 
+    'jobName': 'Seed-10', 'severe': 3, 'iterations': 6, 
+    'phase': STANDARD_PHASE, 'equilibrium': 3})
+mdb.jobs['Seed-10']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 2, 'jobName': 'Seed-10'})
+mdb.jobs['Seed-10']._Message(STATUS, {'totalTime': 1.2, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 2, 'stepTime': 0.2, 'step': 2, 
+    'jobName': 'Seed-10', 'severe': 0, 'iterations': 3, 
+    'phase': STANDARD_PHASE, 'equilibrium': 3})
+mdb.jobs['Seed-10']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 3, 'jobName': 'Seed-10'})
+mdb.jobs['Seed-10']._Message(STATUS, {'totalTime': 1.35, 'attempts': 1, 
+    'timeIncrement': 0.15, 'increment': 3, 'stepTime': 0.35, 'step': 2, 
+    'jobName': 'Seed-10', 'severe': 0, 'iterations': 2, 
+    'phase': STANDARD_PHASE, 'equilibrium': 2})
+mdb.jobs['Seed-10']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 4, 'jobName': 'Seed-10'})
+mdb.jobs['Seed-10']._Message(STATUS, {'totalTime': 1.575, 'attempts': 1, 
+    'timeIncrement': 0.225, 'increment': 4, 'stepTime': 0.575, 'step': 2, 
+    'jobName': 'Seed-10', 'severe': 1, 'iterations': 4, 
+    'phase': STANDARD_PHASE, 'equilibrium': 3})
+mdb.jobs['Seed-10']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 5, 'jobName': 'Seed-10'})
+mdb.jobs['Seed-10']._Message(STATUS, {'totalTime': 1.9125, 'attempts': 1, 
+    'timeIncrement': 0.3375, 'increment': 5, 'stepTime': 0.9125, 'step': 2, 
+    'jobName': 'Seed-10', 'severe': 0, 'iterations': 3, 
+    'phase': STANDARD_PHASE, 'equilibrium': 3})
+mdb.jobs['Seed-10']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 6, 'jobName': 'Seed-10'})
+mdb.jobs['Seed-10']._Message(STATUS, {'totalTime': 2.0, 'attempts': 1, 
+    'timeIncrement': 0.0874999999999999, 'increment': 6, 'stepTime': 1.0, 
+    'step': 2, 'jobName': 'Seed-10', 'severe': 0, 'iterations': 2, 
+    'phase': STANDARD_PHASE, 'equilibrium': 2})
+mdb.jobs['Seed-10']._Message(END_STEP, {'phase': STANDARD_PHASE, 'stepId': 2, 
+    'jobName': 'Seed-10'})
+mdb.jobs['Seed-10']._Message(COMPLETED, {'phase': STANDARD_PHASE, 
+    'message': 'Analysis phase complete', 'jobName': 'Seed-10'})
+mdb.jobs['Seed-10']._Message(JOB_COMPLETED, {
+    'time': 'Thu Dec  8 14:45:52 2022', 'jobName': 'Seed-10'})
+mdb.models['Model-1'].parts['GCU Lifting Lug v1'].deleteMesh()
+mdb.models['Model-1'].parts['GCU Lifting Lug v1'].seedPart(deviationFactor=0.1, 
+    minSizeFactor=0.1, size=9.0)
+mdb.models['Model-1'].parts['GCU Lifting Lug v1'].generateMesh()
+mdb.models['Model-1'].rootAssembly.regenerate()
+mdb.Job(atTime=None, contactPrint=OFF, description='', echoPrint=OFF, 
+    explicitPrecision=SINGLE, getMemoryFromAnalysis=True, historyPrint=OFF, 
+    memory=90, memoryUnits=PERCENTAGE, model='Model-1', modelPrint=OFF, 
+    multiprocessingMode=DEFAULT, name='Seed-9', nodalOutputPrecision=SINGLE, 
+    numCpus=1, numGPUs=0, numThreadsPerMpiProcess=1, queue=None, resultsFormat=
+    ODB, scratch='', type=ANALYSIS, userSubroutine='', waitHours=0, 
+    waitMinutes=0)
+mdb.jobs['Seed-9'].submit(consistencyChecking=OFF)
+mdb.jobs['Seed-9']._Message(STARTED, {'phase': BATCHPRE_PHASE, 
+    'clientHost': 'IT077784', 'handle': 0, 'jobName': 'Seed-9'})
+mdb.jobs['Seed-9']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'The general contact domain for modeling contact interactions in Abaqus/Standard has double-sided facets. Initial contact adjustments for resolving gaps and  overclosures when a surface with double-sided facets is paired with any surface having double-sided facets may be incorrect. Similarly, adjustments for double-sided surfaces crossing each other may be incorrect and no additional warnings or error messages will be issued. In all these cases, we recommend using single-sided surfaces under *CONTACT INITIALIZATION ASSIGNMENT to  handle initial adjustments more precisely and avoid  possible convergence problems.', 
+    'jobName': 'Seed-9'})
+mdb.jobs['Seed-9']._Message(ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\Users\\ck20044\\OneDrive - University of Bristol\\Summative FEA coursewokr\\Seed-9.odb', 
+    'jobName': 'Seed-9'})
+mdb.jobs['Seed-9']._Message(COMPLETED, {'phase': BATCHPRE_PHASE, 
+    'message': 'Analysis phase complete', 'jobName': 'Seed-9'})
+mdb.jobs['Seed-9']._Message(STARTED, {'phase': STANDARD_PHASE, 
+    'clientHost': 'IT077784', 'handle': 8316, 'jobName': 'Seed-9'})
+mdb.jobs['Seed-9']._Message(STEP, {'stepName': 'settle contact', 
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'Seed-9'})
+mdb.jobs['Seed-9']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 0, 'jobName': 'Seed-9'})
+mdb.jobs['Seed-9']._Message(MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'Seed-9', 'memory': 40.0})
+mdb.jobs['Seed-9']._Message(PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 
+    'physical_memory': 16166.0, 'jobName': 'Seed-9'})
+mdb.jobs['Seed-9']._Message(MINIMUM_MEMORY, {'minimum_memory': 20.0, 
+    'phase': STANDARD_PHASE, 'jobName': 'Seed-9'})
+mdb.jobs['Seed-9']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 1, 'jobName': 'Seed-9'})
+mdb.jobs['Seed-9']._Message(STATUS, {'totalTime': 0.1, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 1, 'stepTime': 0.1, 'step': 1, 
+    'jobName': 'Seed-9', 'severe': 3, 'iterations': 4, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Seed-9']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 2, 'jobName': 'Seed-9'})
+mdb.jobs['Seed-9']._Message(STATUS, {'totalTime': 0.2, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 2, 'stepTime': 0.2, 'step': 1, 
+    'jobName': 'Seed-9', 'severe': 0, 'iterations': 2, 'phase': STANDARD_PHASE, 
+    'equilibrium': 2})
+mdb.jobs['Seed-9']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 3, 'jobName': 'Seed-9'})
+mdb.jobs['Seed-9']._Message(STATUS, {'totalTime': 0.35, 'attempts': 1, 
+    'timeIncrement': 0.15, 'increment': 3, 'stepTime': 0.35, 'step': 1, 
+    'jobName': 'Seed-9', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Seed-9']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 4, 'jobName': 'Seed-9'})
+mdb.jobs['Seed-9']._Message(STATUS, {'totalTime': 0.575, 'attempts': 1, 
+    'timeIncrement': 0.225, 'increment': 4, 'stepTime': 0.575, 'step': 1, 
+    'jobName': 'Seed-9', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Seed-9']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 5, 'jobName': 'Seed-9'})
+mdb.jobs['Seed-9']._Message(STATUS, {'totalTime': 0.9125, 'attempts': 1, 
+    'timeIncrement': 0.3375, 'increment': 5, 'stepTime': 0.9125, 'step': 1, 
+    'jobName': 'Seed-9', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Seed-9']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 6, 'jobName': 'Seed-9'})
+mdb.jobs['Seed-9']._Message(STATUS, {'totalTime': 1.0, 'attempts': 1, 
+    'timeIncrement': 0.0874999999999999, 'increment': 6, 'stepTime': 1.0, 
+    'step': 1, 'jobName': 'Seed-9', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Seed-9']._Message(END_STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'Seed-9'})
+mdb.jobs['Seed-9']._Message(STEP, {'phase': STANDARD_PHASE, 'stepId': 2, 
+    'jobName': 'Seed-9'})
+mdb.jobs['Seed-9']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 0, 'jobName': 'Seed-9'})
+mdb.jobs['Seed-9']._Message(MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'Seed-9', 'memory': 40.0})
+mdb.jobs['Seed-9']._Message(PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 
+    'physical_memory': 16166.0, 'jobName': 'Seed-9'})
+mdb.jobs['Seed-9']._Message(MINIMUM_MEMORY, {'minimum_memory': 20.0, 
+    'phase': STANDARD_PHASE, 'jobName': 'Seed-9'})
+mdb.jobs['Seed-9']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 1, 'jobName': 'Seed-9'})
+mdb.jobs['Seed-9']._Message(STATUS, {'totalTime': 1.1, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 1, 'stepTime': 0.1, 'step': 2, 
+    'jobName': 'Seed-9', 'severe': 3, 'iterations': 5, 'phase': STANDARD_PHASE, 
+    'equilibrium': 2})
+mdb.jobs['Seed-9']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 2, 'jobName': 'Seed-9'})
+mdb.jobs['Seed-9']._Message(STATUS, {'totalTime': 1.2, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 2, 'stepTime': 0.2, 'step': 2, 
+    'jobName': 'Seed-9', 'severe': 0, 'iterations': 3, 'phase': STANDARD_PHASE, 
+    'equilibrium': 3})
+mdb.jobs['Seed-9']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 3, 'jobName': 'Seed-9'})
+mdb.jobs['Seed-9']._Message(STATUS, {'totalTime': 1.35, 'attempts': 1, 
+    'timeIncrement': 0.15, 'increment': 3, 'stepTime': 0.35, 'step': 2, 
+    'jobName': 'Seed-9', 'severe': 0, 'iterations': 2, 'phase': STANDARD_PHASE, 
+    'equilibrium': 2})
+mdb.jobs['Seed-9']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 4, 'jobName': 'Seed-9'})
+mdb.jobs['Seed-9']._Message(STATUS, {'totalTime': 1.575, 'attempts': 1, 
+    'timeIncrement': 0.225, 'increment': 4, 'stepTime': 0.575, 'step': 2, 
+    'jobName': 'Seed-9', 'severe': 0, 'iterations': 3, 'phase': STANDARD_PHASE, 
+    'equilibrium': 3})
+mdb.jobs['Seed-9']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 5, 'jobName': 'Seed-9'})
+mdb.jobs['Seed-9']._Message(STATUS, {'totalTime': 1.9125, 'attempts': 1, 
+    'timeIncrement': 0.3375, 'increment': 5, 'stepTime': 0.9125, 'step': 2, 
+    'jobName': 'Seed-9', 'severe': 1, 'iterations': 3, 'phase': STANDARD_PHASE, 
+    'equilibrium': 2})
+mdb.jobs['Seed-9']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 6, 'jobName': 'Seed-9'})
+mdb.jobs['Seed-9']._Message(STATUS, {'totalTime': 2.0, 'attempts': 1, 
+    'timeIncrement': 0.0874999999999999, 'increment': 6, 'stepTime': 1.0, 
+    'step': 2, 'jobName': 'Seed-9', 'severe': 0, 'iterations': 3, 
+    'phase': STANDARD_PHASE, 'equilibrium': 3})
+mdb.jobs['Seed-9']._Message(END_STEP, {'phase': STANDARD_PHASE, 'stepId': 2, 
+    'jobName': 'Seed-9'})
+mdb.jobs['Seed-9']._Message(COMPLETED, {'phase': STANDARD_PHASE, 
+    'message': 'Analysis phase complete', 'jobName': 'Seed-9'})
+mdb.jobs['Seed-9']._Message(JOB_COMPLETED, {'time': 'Thu Dec  8 14:51:10 2022', 
+    'jobName': 'Seed-9'})
+mdb.models['Model-1'].parts['GCU Lifting Lug v1'].deleteMesh()
+mdb.models['Model-1'].parts['GCU Lifting Lug v1'].seedPart(deviationFactor=0.1, 
+    minSizeFactor=0.1, size=8.0)
+mdb.models['Model-1'].parts['GCU Lifting Lug v1'].generateMesh()
+mdb.models['Model-1'].rootAssembly.regenerate()
+mdb.Job(atTime=None, contactPrint=OFF, description='', echoPrint=OFF, 
+    explicitPrecision=SINGLE, getMemoryFromAnalysis=True, historyPrint=OFF, 
+    memory=90, memoryUnits=PERCENTAGE, model='Model-1', modelPrint=OFF, 
+    multiprocessingMode=DEFAULT, name='Seed-8', nodalOutputPrecision=SINGLE, 
+    numCpus=1, numGPUs=0, numThreadsPerMpiProcess=1, queue=None, resultsFormat=
+    ODB, scratch='', type=ANALYSIS, userSubroutine='', waitHours=0, 
+    waitMinutes=0)
+mdb.jobs['Seed-8'].submit(consistencyChecking=OFF)
+mdb.jobs['Seed-8']._Message(STARTED, {'phase': BATCHPRE_PHASE, 
+    'clientHost': 'IT077784', 'handle': 0, 'jobName': 'Seed-8'})
+mdb.jobs['Seed-8']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'The general contact domain for modeling contact interactions in Abaqus/Standard has double-sided facets. Initial contact adjustments for resolving gaps and  overclosures when a surface with double-sided facets is paired with any surface having double-sided facets may be incorrect. Similarly, adjustments for double-sided surfaces crossing each other may be incorrect and no additional warnings or error messages will be issued. In all these cases, we recommend using single-sided surfaces under *CONTACT INITIALIZATION ASSIGNMENT to  handle initial adjustments more precisely and avoid  possible convergence problems.', 
+    'jobName': 'Seed-8'})
+mdb.jobs['Seed-8']._Message(ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\Users\\ck20044\\OneDrive - University of Bristol\\Summative FEA coursewokr\\Seed-8.odb', 
+    'jobName': 'Seed-8'})
+mdb.jobs['Seed-8']._Message(COMPLETED, {'phase': BATCHPRE_PHASE, 
+    'message': 'Analysis phase complete', 'jobName': 'Seed-8'})
+mdb.jobs['Seed-8']._Message(STARTED, {'phase': STANDARD_PHASE, 
+    'clientHost': 'IT077784', 'handle': 10188, 'jobName': 'Seed-8'})
+mdb.jobs['Seed-8']._Message(STEP, {'stepName': 'settle contact', 
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'Seed-8'})
+mdb.jobs['Seed-8']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 0, 'jobName': 'Seed-8'})
+mdb.jobs['Seed-8']._Message(MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'Seed-8', 'memory': 45.0})
+mdb.jobs['Seed-8']._Message(PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 
+    'physical_memory': 16166.0, 'jobName': 'Seed-8'})
+mdb.jobs['Seed-8']._Message(MINIMUM_MEMORY, {'minimum_memory': 21.0, 
+    'phase': STANDARD_PHASE, 'jobName': 'Seed-8'})
+mdb.jobs['Seed-8']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 1, 'jobName': 'Seed-8'})
+mdb.jobs['Seed-8']._Message(STATUS, {'totalTime': 0.1, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 1, 'stepTime': 0.1, 'step': 1, 
+    'jobName': 'Seed-8', 'severe': 4, 'iterations': 5, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Seed-8']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 2, 'jobName': 'Seed-8'})
+mdb.jobs['Seed-8']._Message(STATUS, {'totalTime': 0.2, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 2, 'stepTime': 0.2, 'step': 1, 
+    'jobName': 'Seed-8', 'severe': 0, 'iterations': 2, 'phase': STANDARD_PHASE, 
+    'equilibrium': 2})
+mdb.jobs['Seed-8']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 3, 'jobName': 'Seed-8'})
+mdb.jobs['Seed-8']._Message(STATUS, {'totalTime': 0.35, 'attempts': 1, 
+    'timeIncrement': 0.15, 'increment': 3, 'stepTime': 0.35, 'step': 1, 
+    'jobName': 'Seed-8', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Seed-8']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 4, 'jobName': 'Seed-8'})
+mdb.jobs['Seed-8']._Message(STATUS, {'totalTime': 0.575, 'attempts': 1, 
+    'timeIncrement': 0.225, 'increment': 4, 'stepTime': 0.575, 'step': 1, 
+    'jobName': 'Seed-8', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Seed-8']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 5, 'jobName': 'Seed-8'})
+mdb.jobs['Seed-8']._Message(STATUS, {'totalTime': 0.9125, 'attempts': 1, 
+    'timeIncrement': 0.3375, 'increment': 5, 'stepTime': 0.9125, 'step': 1, 
+    'jobName': 'Seed-8', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Seed-8']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 6, 'jobName': 'Seed-8'})
+mdb.jobs['Seed-8']._Message(STATUS, {'totalTime': 1.0, 'attempts': 1, 
+    'timeIncrement': 0.0874999999999999, 'increment': 6, 'stepTime': 1.0, 
+    'step': 1, 'jobName': 'Seed-8', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Seed-8']._Message(END_STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'Seed-8'})
+mdb.jobs['Seed-8']._Message(STEP, {'phase': STANDARD_PHASE, 'stepId': 2, 
+    'jobName': 'Seed-8'})
+mdb.jobs['Seed-8']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 0, 'jobName': 'Seed-8'})
+mdb.jobs['Seed-8']._Message(MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'Seed-8', 'memory': 45.0})
+mdb.jobs['Seed-8']._Message(PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 
+    'physical_memory': 16166.0, 'jobName': 'Seed-8'})
+mdb.jobs['Seed-8']._Message(MINIMUM_MEMORY, {'minimum_memory': 20.0, 
+    'phase': STANDARD_PHASE, 'jobName': 'Seed-8'})
+mdb.jobs['Seed-8']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 1, 'jobName': 'Seed-8'})
+mdb.jobs['Seed-8']._Message(STATUS, {'totalTime': 1.1, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 1, 'stepTime': 0.1, 'step': 2, 
+    'jobName': 'Seed-8', 'severe': 1, 'iterations': 4, 'phase': STANDARD_PHASE, 
+    'equilibrium': 3})
+mdb.jobs['Seed-8']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 2, 'jobName': 'Seed-8'})
+mdb.jobs['Seed-8']._Message(STATUS, {'totalTime': 1.2, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 2, 'stepTime': 0.2, 'step': 2, 
+    'jobName': 'Seed-8', 'severe': 0, 'iterations': 3, 'phase': STANDARD_PHASE, 
+    'equilibrium': 3})
+mdb.jobs['Seed-8']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 3, 'jobName': 'Seed-8'})
+mdb.jobs['Seed-8']._Message(STATUS, {'totalTime': 1.35, 'attempts': 1, 
+    'timeIncrement': 0.15, 'increment': 3, 'stepTime': 0.35, 'step': 2, 
+    'jobName': 'Seed-8', 'severe': 0, 'iterations': 2, 'phase': STANDARD_PHASE, 
+    'equilibrium': 2})
+mdb.jobs['Seed-8']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 4, 'jobName': 'Seed-8'})
+mdb.jobs['Seed-8']._Message(STATUS, {'totalTime': 1.575, 'attempts': 1, 
+    'timeIncrement': 0.225, 'increment': 4, 'stepTime': 0.575, 'step': 2, 
+    'jobName': 'Seed-8', 'severe': 0, 'iterations': 3, 'phase': STANDARD_PHASE, 
+    'equilibrium': 3})
+mdb.jobs['Seed-8']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 5, 'jobName': 'Seed-8'})
+mdb.jobs['Seed-8']._Message(STATUS, {'totalTime': 1.9125, 'attempts': 1, 
+    'timeIncrement': 0.3375, 'increment': 5, 'stepTime': 0.9125, 'step': 2, 
+    'jobName': 'Seed-8', 'severe': 1, 'iterations': 4, 'phase': STANDARD_PHASE, 
+    'equilibrium': 3})
+mdb.jobs['Seed-8']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 6, 'jobName': 'Seed-8'})
+mdb.jobs['Seed-8']._Message(STATUS, {'totalTime': 2.0, 'attempts': 1, 
+    'timeIncrement': 0.0874999999999999, 'increment': 6, 'stepTime': 1.0, 
+    'step': 2, 'jobName': 'Seed-8', 'severe': 0, 'iterations': 3, 
+    'phase': STANDARD_PHASE, 'equilibrium': 3})
+mdb.jobs['Seed-8']._Message(END_STEP, {'phase': STANDARD_PHASE, 'stepId': 2, 
+    'jobName': 'Seed-8'})
+mdb.jobs['Seed-8']._Message(COMPLETED, {'phase': STANDARD_PHASE, 
+    'message': 'Analysis phase complete', 'jobName': 'Seed-8'})
+mdb.jobs['Seed-8']._Message(JOB_COMPLETED, {'time': 'Thu Dec  8 14:53:06 2022', 
+    'jobName': 'Seed-8'})
+mdb.models['Model-1'].parts['GCU Lifting Lug v1'].deleteMesh()
+mdb.models['Model-1'].parts['GCU Lifting Lug v1'].seedPart(deviationFactor=0.1, 
+    minSizeFactor=0.1, size=7.0)
+mdb.models['Model-1'].parts['GCU Lifting Lug v1'].generateMesh()
+mdb.models['Model-1'].rootAssembly.regenerate()
+mdb.Job(atTime=None, contactPrint=OFF, description='', echoPrint=OFF, 
+    explicitPrecision=SINGLE, getMemoryFromAnalysis=True, historyPrint=OFF, 
+    memory=90, memoryUnits=PERCENTAGE, model='Model-1', modelPrint=OFF, 
+    multiprocessingMode=DEFAULT, name='Seed-7', nodalOutputPrecision=SINGLE, 
+    numCpus=1, numGPUs=0, numThreadsPerMpiProcess=1, queue=None, resultsFormat=
+    ODB, scratch='', type=ANALYSIS, userSubroutine='', waitHours=0, 
+    waitMinutes=0)
+mdb.jobs['Seed-7'].submit(consistencyChecking=OFF)
+mdb.jobs['Seed-7']._Message(STARTED, {'phase': BATCHPRE_PHASE, 
+    'clientHost': 'IT077784', 'handle': 0, 'jobName': 'Seed-7'})
+mdb.jobs['Seed-7']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'The general contact domain for modeling contact interactions in Abaqus/Standard has double-sided facets. Initial contact adjustments for resolving gaps and  overclosures when a surface with double-sided facets is paired with any surface having double-sided facets may be incorrect. Similarly, adjustments for double-sided surfaces crossing each other may be incorrect and no additional warnings or error messages will be issued. In all these cases, we recommend using single-sided surfaces under *CONTACT INITIALIZATION ASSIGNMENT to  handle initial adjustments more precisely and avoid  possible convergence problems.', 
+    'jobName': 'Seed-7'})
+mdb.jobs['Seed-7']._Message(ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\Users\\ck20044\\OneDrive - University of Bristol\\Summative FEA coursewokr\\Seed-7.odb', 
+    'jobName': 'Seed-7'})
+mdb.jobs['Seed-7']._Message(COMPLETED, {'phase': BATCHPRE_PHASE, 
+    'message': 'Analysis phase complete', 'jobName': 'Seed-7'})
+mdb.jobs['Seed-7']._Message(STARTED, {'phase': STANDARD_PHASE, 
+    'clientHost': 'IT077784', 'handle': 13224, 'jobName': 'Seed-7'})
+mdb.jobs['Seed-7']._Message(STEP, {'stepName': 'settle contact', 
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'Seed-7'})
+mdb.jobs['Seed-7']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 0, 'jobName': 'Seed-7'})
+mdb.jobs['Seed-7']._Message(MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'Seed-7', 'memory': 58.0})
+mdb.jobs['Seed-7']._Message(PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 
+    'physical_memory': 16166.0, 'jobName': 'Seed-7'})
+mdb.jobs['Seed-7']._Message(MINIMUM_MEMORY, {'minimum_memory': 22.0, 
+    'phase': STANDARD_PHASE, 'jobName': 'Seed-7'})
+mdb.jobs['Seed-7']._Message(STATUS, {'totalTime': 0.0, 'attempts': ' 1U', 
+    'timeIncrement': 0.1, 'increment': 1, 'stepTime': 0.0, 'step': 1, 
+    'jobName': 'Seed-7', 'severe': 4, 'iterations': 4, 'phase': STANDARD_PHASE, 
+    'equilibrium': 0})
+mdb.jobs['Seed-7']._Message(STATUS, {'totalTime': 0.0, 'attempts': ' 2U', 
+    'timeIncrement': 0.025, 'increment': 1, 'stepTime': 0.0, 'step': 1, 
+    'jobName': 'Seed-7', 'severe': 4, 'iterations': 4, 'phase': STANDARD_PHASE, 
+    'equilibrium': 0})
+mdb.jobs['Seed-7']._Message(STATUS, {'totalTime': 0.0, 'attempts': ' 3U', 
+    'timeIncrement': 0.00625, 'increment': 1, 'stepTime': 0.0, 'step': 1, 
+    'jobName': 'Seed-7', 'severe': 4, 'iterations': 4, 'phase': STANDARD_PHASE, 
+    'equilibrium': 0})
+mdb.jobs['Seed-7']._Message(STATUS, {'totalTime': 0.0, 'attempts': ' 4U', 
+    'timeIncrement': 0.0015625, 'increment': 1, 'stepTime': 0.0, 'step': 1, 
+    'jobName': 'Seed-7', 'severe': 4, 'iterations': 4, 'phase': STANDARD_PHASE, 
+    'equilibrium': 0})
+mdb.jobs['Seed-7']._Message(STATUS, {'totalTime': 0.0, 'attempts': ' 5U', 
+    'timeIncrement': 0.000390625, 'increment': 1, 'stepTime': 0.0, 'step': 1, 
+    'jobName': 'Seed-7', 'severe': 4, 'iterations': 4, 'phase': STANDARD_PHASE, 
+    'equilibrium': 0})
+mdb.jobs['Seed-7']._Message(ERROR, {'phase': STANDARD_PHASE, 
+    'message': 'Too many attempts made for this increment', 
+    'jobName': 'Seed-7'})
+mdb.jobs['Seed-7']._Message(ABORTED, {'phase': STANDARD_PHASE, 
+    'message': 'Analysis phase failed due to errors', 'jobName': 'Seed-7'})
+mdb.jobs['Seed-7']._Message(ERROR, {
+    'message': 'Abaqus/Standard Analysis exited with an error - Please see the  message file for possible error messages if the file exists.', 
+    'jobName': 'Seed-7'})
+mdb.jobs['Seed-7']._Message(JOB_ABORTED, {
+    'message': 'Abaqus/Standard Analysis exited with an error - Please see the  message file for possible error messages if the file exists.', 
+    'jobName': 'Seed-7'})
+mdb.models['Model-1'].parts['GCU Lifting Lug v1'].deleteMesh()
+mdb.models['Model-1'].parts['GCU Lifting Lug v1'].seedPart(deviationFactor=0.1, 
+    minSizeFactor=0.1, size=8.0)
+mdb.models['Model-1'].parts['GCU Lifting Lug v1'].generateMesh()
+mdb.models['Model-1'].rootAssembly.regenerate()
+mdb.Job(atTime=None, contactPrint=OFF, description='', echoPrint=OFF, 
+    explicitPrecision=SINGLE, getMemoryFromAnalysis=True, historyPrint=OFF, 
+    memory=90, memoryUnits=PERCENTAGE, model='Model-1', modelPrint=OFF, 
+    multiprocessingMode=DEFAULT, name='Seed-88', nodalOutputPrecision=SINGLE, 
+    numCpus=1, numGPUs=0, numThreadsPerMpiProcess=1, queue=None, resultsFormat=
+    ODB, scratch='', type=ANALYSIS, userSubroutine='', waitHours=0, 
+    waitMinutes=0)
+mdb.jobs['Seed-88'].submit(consistencyChecking=OFF)
+mdb.jobs['Seed-88']._Message(STARTED, {'phase': BATCHPRE_PHASE, 
+    'clientHost': 'IT077784', 'handle': 0, 'jobName': 'Seed-88'})
+mdb.jobs['Seed-88']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'The general contact domain for modeling contact interactions in Abaqus/Standard has double-sided facets. Initial contact adjustments for resolving gaps and  overclosures when a surface with double-sided facets is paired with any surface having double-sided facets may be incorrect. Similarly, adjustments for double-sided surfaces crossing each other may be incorrect and no additional warnings or error messages will be issued. In all these cases, we recommend using single-sided surfaces under *CONTACT INITIALIZATION ASSIGNMENT to  handle initial adjustments more precisely and avoid  possible convergence problems.', 
+    'jobName': 'Seed-88'})
+mdb.jobs['Seed-88']._Message(ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\Users\\ck20044\\OneDrive - University of Bristol\\Summative FEA coursewokr\\Seed-88.odb', 
+    'jobName': 'Seed-88'})
+mdb.jobs['Seed-88']._Message(COMPLETED, {'phase': BATCHPRE_PHASE, 
+    'message': 'Analysis phase complete', 'jobName': 'Seed-88'})
+mdb.jobs['Seed-88']._Message(STARTED, {'phase': STANDARD_PHASE, 
+    'clientHost': 'IT077784', 'handle': 15604, 'jobName': 'Seed-88'})
+mdb.jobs['Seed-88']._Message(STEP, {'stepName': 'settle contact', 
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'Seed-88'})
+mdb.jobs['Seed-88']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 0, 'jobName': 'Seed-88'})
+mdb.jobs['Seed-88']._Message(MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'Seed-88', 'memory': 45.0})
+mdb.jobs['Seed-88']._Message(PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 
+    'physical_memory': 16166.0, 'jobName': 'Seed-88'})
+mdb.jobs['Seed-88']._Message(MINIMUM_MEMORY, {'minimum_memory': 21.0, 
+    'phase': STANDARD_PHASE, 'jobName': 'Seed-88'})
+mdb.jobs['Seed-88']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 1, 'jobName': 'Seed-88'})
+mdb.jobs['Seed-88']._Message(STATUS, {'totalTime': 0.1, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 1, 'stepTime': 0.1, 'step': 1, 
+    'jobName': 'Seed-88', 'severe': 4, 'iterations': 5, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Seed-88']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 2, 'jobName': 'Seed-88'})
+mdb.jobs['Seed-88']._Message(STATUS, {'totalTime': 0.2, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 2, 'stepTime': 0.2, 'step': 1, 
+    'jobName': 'Seed-88', 'severe': 0, 'iterations': 2, 
+    'phase': STANDARD_PHASE, 'equilibrium': 2})
+mdb.jobs['Seed-88']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 3, 'jobName': 'Seed-88'})
+mdb.jobs['Seed-88']._Message(STATUS, {'totalTime': 0.35, 'attempts': 1, 
+    'timeIncrement': 0.15, 'increment': 3, 'stepTime': 0.35, 'step': 1, 
+    'jobName': 'Seed-88', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Seed-88']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 4, 'jobName': 'Seed-88'})
+mdb.jobs['Seed-88']._Message(STATUS, {'totalTime': 0.575, 'attempts': 1, 
+    'timeIncrement': 0.225, 'increment': 4, 'stepTime': 0.575, 'step': 1, 
+    'jobName': 'Seed-88', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Seed-88']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 5, 'jobName': 'Seed-88'})
+mdb.jobs['Seed-88']._Message(STATUS, {'totalTime': 0.9125, 'attempts': 1, 
+    'timeIncrement': 0.3375, 'increment': 5, 'stepTime': 0.9125, 'step': 1, 
+    'jobName': 'Seed-88', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Seed-88']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 6, 'jobName': 'Seed-88'})
+mdb.jobs['Seed-88']._Message(STATUS, {'totalTime': 1.0, 'attempts': 1, 
+    'timeIncrement': 0.0874999999999999, 'increment': 6, 'stepTime': 1.0, 
+    'step': 1, 'jobName': 'Seed-88', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Seed-88']._Message(END_STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'Seed-88'})
+mdb.jobs['Seed-88']._Message(STEP, {'phase': STANDARD_PHASE, 'stepId': 2, 
+    'jobName': 'Seed-88'})
+mdb.jobs['Seed-88']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 0, 'jobName': 'Seed-88'})
+mdb.jobs['Seed-88']._Message(MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'Seed-88', 'memory': 45.0})
+mdb.jobs['Seed-88']._Message(PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 
+    'physical_memory': 16166.0, 'jobName': 'Seed-88'})
+mdb.jobs['Seed-88']._Message(MINIMUM_MEMORY, {'minimum_memory': 20.0, 
+    'phase': STANDARD_PHASE, 'jobName': 'Seed-88'})
+mdb.jobs['Seed-88']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 1, 'jobName': 'Seed-88'})
+mdb.jobs['Seed-88']._Message(STATUS, {'totalTime': 1.1, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 1, 'stepTime': 0.1, 'step': 2, 
+    'jobName': 'Seed-88', 'severe': 1, 'iterations': 4, 
+    'phase': STANDARD_PHASE, 'equilibrium': 3})
+mdb.jobs['Seed-88']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 2, 'jobName': 'Seed-88'})
+mdb.jobs['Seed-88']._Message(STATUS, {'totalTime': 1.2, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 2, 'stepTime': 0.2, 'step': 2, 
+    'jobName': 'Seed-88', 'severe': 0, 'iterations': 3, 
+    'phase': STANDARD_PHASE, 'equilibrium': 3})
+mdb.jobs['Seed-88']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 3, 'jobName': 'Seed-88'})
+mdb.jobs['Seed-88']._Message(STATUS, {'totalTime': 1.35, 'attempts': 1, 
+    'timeIncrement': 0.15, 'increment': 3, 'stepTime': 0.35, 'step': 2, 
+    'jobName': 'Seed-88', 'severe': 0, 'iterations': 2, 
+    'phase': STANDARD_PHASE, 'equilibrium': 2})
+mdb.jobs['Seed-88']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 4, 'jobName': 'Seed-88'})
+mdb.jobs['Seed-88']._Message(STATUS, {'totalTime': 1.575, 'attempts': 1, 
+    'timeIncrement': 0.225, 'increment': 4, 'stepTime': 0.575, 'step': 2, 
+    'jobName': 'Seed-88', 'severe': 0, 'iterations': 3, 
+    'phase': STANDARD_PHASE, 'equilibrium': 3})
+mdb.jobs['Seed-88']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 5, 'jobName': 'Seed-88'})
+mdb.jobs['Seed-88']._Message(STATUS, {'totalTime': 1.9125, 'attempts': 1, 
+    'timeIncrement': 0.3375, 'increment': 5, 'stepTime': 0.9125, 'step': 2, 
+    'jobName': 'Seed-88', 'severe': 1, 'iterations': 4, 
+    'phase': STANDARD_PHASE, 'equilibrium': 3})
+mdb.jobs['Seed-88']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 6, 'jobName': 'Seed-88'})
+mdb.jobs['Seed-88']._Message(STATUS, {'totalTime': 2.0, 'attempts': 1, 
+    'timeIncrement': 0.0874999999999999, 'increment': 6, 'stepTime': 1.0, 
+    'step': 2, 'jobName': 'Seed-88', 'severe': 0, 'iterations': 3, 
+    'phase': STANDARD_PHASE, 'equilibrium': 3})
+mdb.jobs['Seed-88']._Message(END_STEP, {'phase': STANDARD_PHASE, 'stepId': 2, 
+    'jobName': 'Seed-88'})
+mdb.jobs['Seed-88']._Message(COMPLETED, {'phase': STANDARD_PHASE, 
+    'message': 'Analysis phase complete', 'jobName': 'Seed-88'})
+mdb.jobs['Seed-88']._Message(JOB_COMPLETED, {
+    'time': 'Thu Dec  8 14:58:16 2022', 'jobName': 'Seed-88'})
+mdb.models['Model-1'].parts['GCU Lifting Lug v1'].deleteMesh()
+mdb.models['Model-1'].parts['GCU Lifting Lug v1'].seedPart(deviationFactor=0.1, 
+    minSizeFactor=0.1, size=7.0)
+mdb.models['Model-1'].parts['GCU Lifting Lug v1'].generateMesh()
+mdb.models['Model-1'].rootAssembly.regenerate()
+mdb.Job(atTime=None, contactPrint=OFF, description='', echoPrint=OFF, 
+    explicitPrecision=SINGLE, getMemoryFromAnalysis=True, historyPrint=OFF, 
+    memory=90, memoryUnits=PERCENTAGE, model='Model-1', modelPrint=OFF, 
+    multiprocessingMode=DEFAULT, name='Seed-77', nodalOutputPrecision=SINGLE, 
+    numCpus=1, numGPUs=0, numThreadsPerMpiProcess=1, queue=None, resultsFormat=
+    ODB, scratch='', type=ANALYSIS, userSubroutine='', waitHours=0, 
+    waitMinutes=0)
+mdb.jobs['Seed-77'].submit(consistencyChecking=OFF)
+mdb.jobs['Seed-77']._Message(STARTED, {'phase': BATCHPRE_PHASE, 
+    'clientHost': 'IT077784', 'handle': 0, 'jobName': 'Seed-77'})
+mdb.jobs['Seed-77']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'The general contact domain for modeling contact interactions in Abaqus/Standard has double-sided facets. Initial contact adjustments for resolving gaps and  overclosures when a surface with double-sided facets is paired with any surface having double-sided facets may be incorrect. Similarly, adjustments for double-sided surfaces crossing each other may be incorrect and no additional warnings or error messages will be issued. In all these cases, we recommend using single-sided surfaces under *CONTACT INITIALIZATION ASSIGNMENT to  handle initial adjustments more precisely and avoid  possible convergence problems.', 
+    'jobName': 'Seed-77'})
+mdb.jobs['Seed-77']._Message(ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\Users\\ck20044\\OneDrive - University of Bristol\\Summative FEA coursewokr\\Seed-77.odb', 
+    'jobName': 'Seed-77'})
+mdb.jobs['Seed-77']._Message(COMPLETED, {'phase': BATCHPRE_PHASE, 
+    'message': 'Analysis phase complete', 'jobName': 'Seed-77'})
+mdb.jobs['Seed-77']._Message(STARTED, {'phase': STANDARD_PHASE, 
+    'clientHost': 'IT077784', 'handle': 15292, 'jobName': 'Seed-77'})
+mdb.jobs['Seed-77']._Message(STEP, {'stepName': 'settle contact', 
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'Seed-77'})
+mdb.jobs['Seed-77']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 0, 'jobName': 'Seed-77'})
+mdb.jobs['Seed-77']._Message(MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'Seed-77', 'memory': 58.0})
+mdb.jobs['Seed-77']._Message(PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 
+    'physical_memory': 16166.0, 'jobName': 'Seed-77'})
+mdb.jobs['Seed-77']._Message(MINIMUM_MEMORY, {'minimum_memory': 22.0, 
+    'phase': STANDARD_PHASE, 'jobName': 'Seed-77'})
+mdb.jobs['Seed-77']._Message(STATUS, {'totalTime': 0.0, 'attempts': ' 1U', 
+    'timeIncrement': 0.1, 'increment': 1, 'stepTime': 0.0, 'step': 1, 
+    'jobName': 'Seed-77', 'severe': 4, 'iterations': 4, 
+    'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['Seed-77']._Message(STATUS, {'totalTime': 0.0, 'attempts': ' 2U', 
+    'timeIncrement': 0.025, 'increment': 1, 'stepTime': 0.0, 'step': 1, 
+    'jobName': 'Seed-77', 'severe': 4, 'iterations': 4, 
+    'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['Seed-77']._Message(STATUS, {'totalTime': 0.0, 'attempts': ' 3U', 
+    'timeIncrement': 0.00625, 'increment': 1, 'stepTime': 0.0, 'step': 1, 
+    'jobName': 'Seed-77', 'severe': 4, 'iterations': 4, 
+    'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['Seed-77']._Message(STATUS, {'totalTime': 0.0, 'attempts': ' 4U', 
+    'timeIncrement': 0.0015625, 'increment': 1, 'stepTime': 0.0, 'step': 1, 
+    'jobName': 'Seed-77', 'severe': 4, 'iterations': 4, 
+    'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['Seed-77']._Message(STATUS, {'totalTime': 0.0, 'attempts': ' 5U', 
+    'timeIncrement': 0.000390625, 'increment': 1, 'stepTime': 0.0, 'step': 1, 
+    'jobName': 'Seed-77', 'severe': 4, 'iterations': 4, 
+    'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['Seed-77']._Message(ERROR, {'phase': STANDARD_PHASE, 
+    'message': 'Too many attempts made for this increment', 
+    'jobName': 'Seed-77'})
+mdb.jobs['Seed-77']._Message(ABORTED, {'phase': STANDARD_PHASE, 
+    'message': 'Analysis phase failed due to errors', 'jobName': 'Seed-77'})
+mdb.jobs['Seed-77']._Message(ERROR, {
+    'message': 'Abaqus/Standard Analysis exited with an error - Please see the  message file for possible error messages if the file exists.', 
+    'jobName': 'Seed-77'})
+mdb.jobs['Seed-77']._Message(JOB_ABORTED, {
+    'message': 'Abaqus/Standard Analysis exited with an error - Please see the  message file for possible error messages if the file exists.', 
+    'jobName': 'Seed-77'})
+mdb.models['Model-1'].interactionProperties['Friction'].tangentialBehavior.setValues(
+    dependencies=0, directionality=ISOTROPIC, elasticSlipStiffness=None, 
+    formulation=PENALTY, fraction=0.005, maximumElasticSlip=FRACTION, 
+    pressureDependency=OFF, shearStressLimit=None, slipRateDependency=OFF, 
+    table=((0.2, ), ), temperatureDependency=OFF)
+mdb.models['Model-1'].interactionProperties['Friction'].NormalBehavior(
+    allowSeparation=ON, constraintEnforcementMethod=DEFAULT, 
+    pressureOverclosure=HARD)
+# Save by ck20044 on 2022_12_08-15.04.33; build 2022.HF3 2022_05_20-02.07.52 176569
+# Save by ck20044 on 2022_12_08-15.05.01; build 2022.HF3 2022_05_20-02.07.52 176569
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+mdb.Job(atTime=None, contactPrint=OFF, description='', echoPrint=OFF, 
+    explicitPrecision=SINGLE, getMemoryFromAnalysis=True, historyPrint=OFF, 
+    memory=90, memoryUnits=PERCENTAGE, model='Model-1', modelPrint=OFF, 
+    multiprocessingMode=DEFAULT, name='job-777', nodalOutputPrecision=SINGLE, 
+    numCpus=1, numGPUs=0, numThreadsPerMpiProcess=1, queue=None, resultsFormat=
+    ODB, scratch='', type=ANALYSIS, userSubroutine='', waitHours=0, 
+    waitMinutes=0)
+mdb.jobs['job-777'].submit(consistencyChecking=OFF)
+mdb.jobs['job-777']._Message(STARTED, {'phase': BATCHPRE_PHASE, 
+    'clientHost': 'IT077784', 'handle': 0, 'jobName': 'job-777'})
+mdb.jobs['job-777']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'The general contact domain for modeling contact interactions in Abaqus/Standard has double-sided facets. Initial contact adjustments for resolving gaps and  overclosures when a surface with double-sided facets is paired with any surface having double-sided facets may be incorrect. Similarly, adjustments for double-sided surfaces crossing each other may be incorrect and no additional warnings or error messages will be issued. In all these cases, we recommend using single-sided surfaces under *CONTACT INITIALIZATION ASSIGNMENT to  handle initial adjustments more precisely and avoid  possible convergence problems.', 
+    'jobName': 'job-777'})
+mdb.jobs['job-777']._Message(ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\Users\\ck20044\\OneDrive - University of Bristol\\Summative FEA coursewokr\\job-777.odb', 
+    'jobName': 'job-777'})
+mdb.jobs['job-777']._Message(COMPLETED, {'phase': BATCHPRE_PHASE, 
+    'message': 'Analysis phase complete', 'jobName': 'job-777'})
+mdb.jobs['job-777']._Message(STARTED, {'phase': STANDARD_PHASE, 
+    'clientHost': 'IT077784', 'handle': 10184, 'jobName': 'job-777'})
+mdb.jobs['job-777']._Message(STEP, {'stepName': 'settle contact', 
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'job-777'})
+mdb.jobs['job-777']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 0, 'jobName': 'job-777'})
+mdb.jobs['job-777']._Message(MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'job-777', 'memory': 58.0})
+mdb.jobs['job-777']._Message(PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 
+    'physical_memory': 16166.0, 'jobName': 'job-777'})
+mdb.jobs['job-777']._Message(MINIMUM_MEMORY, {'minimum_memory': 22.0, 
+    'phase': STANDARD_PHASE, 'jobName': 'job-777'})
+mdb.jobs['job-777']._Message(STATUS, {'totalTime': 0.0, 'attempts': ' 1U', 
+    'timeIncrement': 0.1, 'increment': 1, 'stepTime': 0.0, 'step': 1, 
+    'jobName': 'job-777', 'severe': 4, 'iterations': 4, 
+    'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['job-777']._Message(STATUS, {'totalTime': 0.0, 'attempts': ' 2U', 
+    'timeIncrement': 0.025, 'increment': 1, 'stepTime': 0.0, 'step': 1, 
+    'jobName': 'job-777', 'severe': 4, 'iterations': 4, 
+    'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['job-777']._Message(STATUS, {'totalTime': 0.0, 'attempts': ' 3U', 
+    'timeIncrement': 0.00625, 'increment': 1, 'stepTime': 0.0, 'step': 1, 
+    'jobName': 'job-777', 'severe': 4, 'iterations': 4, 
+    'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['job-777']._Message(STATUS, {'totalTime': 0.0, 'attempts': ' 4U', 
+    'timeIncrement': 0.0015625, 'increment': 1, 'stepTime': 0.0, 'step': 1, 
+    'jobName': 'job-777', 'severe': 4, 'iterations': 4, 
+    'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['job-777']._Message(STATUS, {'totalTime': 0.0, 'attempts': ' 5U', 
+    'timeIncrement': 0.000390625, 'increment': 1, 'stepTime': 0.0, 'step': 1, 
+    'jobName': 'job-777', 'severe': 4, 'iterations': 4, 
+    'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['job-777']._Message(ERROR, {'phase': STANDARD_PHASE, 
+    'message': 'Too many attempts made for this increment', 
+    'jobName': 'job-777'})
+mdb.jobs['job-777']._Message(ABORTED, {'phase': STANDARD_PHASE, 
+    'message': 'Analysis phase failed due to errors', 'jobName': 'job-777'})
+mdb.jobs['job-777']._Message(ERROR, {
+    'message': 'Abaqus/Standard Analysis exited with an error - Please see the  message file for possible error messages if the file exists.', 
+    'jobName': 'job-777'})
+mdb.jobs['job-777']._Message(JOB_ABORTED, {
+    'message': 'Abaqus/Standard Analysis exited with an error - Please see the  message file for possible error messages if the file exists.', 
+    'jobName': 'job-777'})
+mdb.models['Model-1'].parts['Pin/rope'].deleteMesh()
+mdb.models['Model-1'].parts['Pin/rope'].seedPart(deviationFactor=0.1, 
+    minSizeFactor=0.1, size=7.0)
+mdb.models['Model-1'].parts['Pin/rope'].generateMesh()
+mdb.models['Model-1'].rootAssembly.regenerate()
+mdb.Job(atTime=None, contactPrint=OFF, description='', echoPrint=OFF, 
+    explicitPrecision=SINGLE, getMemoryFromAnalysis=True, historyPrint=OFF, 
+    memory=90, memoryUnits=PERCENTAGE, model='Model-1', modelPrint=OFF, 
+    multiprocessingMode=DEFAULT, name='job-7777', nodalOutputPrecision=SINGLE, 
+    numCpus=1, numGPUs=0, numThreadsPerMpiProcess=1, queue=None, resultsFormat=
+    ODB, scratch='', type=ANALYSIS, userSubroutine='', waitHours=0, 
+    waitMinutes=0)
+mdb.jobs['job-7777'].submit(consistencyChecking=OFF)
+mdb.jobs['job-7777']._Message(STARTED, {'phase': BATCHPRE_PHASE, 
+    'clientHost': 'IT077784', 'handle': 0, 'jobName': 'job-7777'})
+mdb.jobs['job-7777']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'The general contact domain for modeling contact interactions in Abaqus/Standard has double-sided facets. Initial contact adjustments for resolving gaps and  overclosures when a surface with double-sided facets is paired with any surface having double-sided facets may be incorrect. Similarly, adjustments for double-sided surfaces crossing each other may be incorrect and no additional warnings or error messages will be issued. In all these cases, we recommend using single-sided surfaces under *CONTACT INITIALIZATION ASSIGNMENT to  handle initial adjustments more precisely and avoid  possible convergence problems.', 
+    'jobName': 'job-7777'})
+mdb.jobs['job-7777']._Message(ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\Users\\ck20044\\OneDrive - University of Bristol\\Summative FEA coursewokr\\job-7777.odb', 
+    'jobName': 'job-7777'})
+mdb.jobs['job-7777']._Message(COMPLETED, {'phase': BATCHPRE_PHASE, 
+    'message': 'Analysis phase complete', 'jobName': 'job-7777'})
+mdb.jobs['job-7777']._Message(STARTED, {'phase': STANDARD_PHASE, 
+    'clientHost': 'IT077784', 'handle': 13440, 'jobName': 'job-7777'})
+mdb.jobs['job-7777']._Message(STEP, {'stepName': 'settle contact', 
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'job-7777'})
+mdb.jobs['job-7777']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 0, 'jobName': 'job-7777'})
+mdb.jobs['job-7777']._Message(MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'job-7777', 'memory': 57.0})
+mdb.jobs['job-7777']._Message(PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 
+    'physical_memory': 16166.0, 'jobName': 'job-7777'})
+mdb.jobs['job-7777']._Message(MINIMUM_MEMORY, {'minimum_memory': 21.0, 
+    'phase': STANDARD_PHASE, 'jobName': 'job-7777'})
+mdb.jobs['job-7777']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 1, 'jobName': 'job-7777'})
+mdb.jobs['job-7777']._Message(STATUS, {'totalTime': 0.1, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 1, 'stepTime': 0.1, 'step': 1, 
+    'jobName': 'job-7777', 'severe': 3, 'iterations': 4, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['job-7777']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 2, 'jobName': 'job-7777'})
+mdb.jobs['job-7777']._Message(STATUS, {'totalTime': 0.2, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 2, 'stepTime': 0.2, 'step': 1, 
+    'jobName': 'job-7777', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['job-7777']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 3, 'jobName': 'job-7777'})
+mdb.jobs['job-7777']._Message(STATUS, {'totalTime': 0.35, 'attempts': 1, 
+    'timeIncrement': 0.15, 'increment': 3, 'stepTime': 0.35, 'step': 1, 
+    'jobName': 'job-7777', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['job-7777']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 4, 'jobName': 'job-7777'})
+mdb.jobs['job-7777']._Message(STATUS, {'totalTime': 0.575, 'attempts': 1, 
+    'timeIncrement': 0.225, 'increment': 4, 'stepTime': 0.575, 'step': 1, 
+    'jobName': 'job-7777', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['job-7777']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 5, 'jobName': 'job-7777'})
+mdb.jobs['job-7777']._Message(STATUS, {'totalTime': 0.9125, 'attempts': 1, 
+    'timeIncrement': 0.3375, 'increment': 5, 'stepTime': 0.9125, 'step': 1, 
+    'jobName': 'job-7777', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['job-7777']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 6, 'jobName': 'job-7777'})
+mdb.jobs['job-7777']._Message(STATUS, {'totalTime': 1.0, 'attempts': 1, 
+    'timeIncrement': 0.0874999999999999, 'increment': 6, 'stepTime': 1.0, 
+    'step': 1, 'jobName': 'job-7777', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['job-7777']._Message(END_STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'job-7777'})
+mdb.jobs['job-7777']._Message(STEP, {'phase': STANDARD_PHASE, 'stepId': 2, 
+    'jobName': 'job-7777'})
+mdb.jobs['job-7777']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 0, 'jobName': 'job-7777'})
+mdb.jobs['job-7777']._Message(MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'job-7777', 'memory': 57.0})
+mdb.jobs['job-7777']._Message(PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 
+    'physical_memory': 16166.0, 'jobName': 'job-7777'})
+mdb.jobs['job-7777']._Message(MINIMUM_MEMORY, {'minimum_memory': 20.0, 
+    'phase': STANDARD_PHASE, 'jobName': 'job-7777'})
+mdb.jobs['job-7777']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 1, 'jobName': 'job-7777'})
+mdb.jobs['job-7777']._Message(STATUS, {'totalTime': 1.1, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 1, 'stepTime': 0.1, 'step': 2, 
+    'jobName': 'job-7777', 'severe': 2, 'iterations': 4, 
+    'phase': STANDARD_PHASE, 'equilibrium': 2})
+mdb.jobs['job-7777']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 2, 'jobName': 'job-7777'})
+mdb.jobs['job-7777']._Message(STATUS, {'totalTime': 1.2, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 2, 'stepTime': 0.2, 'step': 2, 
+    'jobName': 'job-7777', 'severe': 0, 'iterations': 2, 
+    'phase': STANDARD_PHASE, 'equilibrium': 2})
+mdb.jobs['job-7777']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 3, 'jobName': 'job-7777'})
+mdb.jobs['job-7777']._Message(STATUS, {'totalTime': 1.35, 'attempts': 1, 
+    'timeIncrement': 0.15, 'increment': 3, 'stepTime': 0.35, 'step': 2, 
+    'jobName': 'job-7777', 'severe': 0, 'iterations': 2, 
+    'phase': STANDARD_PHASE, 'equilibrium': 2})
+mdb.jobs['job-7777']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 4, 'jobName': 'job-7777'})
+mdb.jobs['job-7777']._Message(STATUS, {'totalTime': 1.575, 'attempts': 1, 
+    'timeIncrement': 0.225, 'increment': 4, 'stepTime': 0.575, 'step': 2, 
+    'jobName': 'job-7777', 'severe': 0, 'iterations': 2, 
+    'phase': STANDARD_PHASE, 'equilibrium': 2})
+mdb.jobs['job-7777']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 5, 'jobName': 'job-7777'})
+mdb.jobs['job-7777']._Message(STATUS, {'totalTime': 1.9125, 'attempts': 1, 
+    'timeIncrement': 0.3375, 'increment': 5, 'stepTime': 0.9125, 'step': 2, 
+    'jobName': 'job-7777', 'severe': 0, 'iterations': 3, 
+    'phase': STANDARD_PHASE, 'equilibrium': 3})
+mdb.jobs['job-7777']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 6, 'jobName': 'job-7777'})
+mdb.jobs['job-7777']._Message(STATUS, {'totalTime': 2.0, 'attempts': 1, 
+    'timeIncrement': 0.0874999999999999, 'increment': 6, 'stepTime': 1.0, 
+    'step': 2, 'jobName': 'job-7777', 'severe': 0, 'iterations': 2, 
+    'phase': STANDARD_PHASE, 'equilibrium': 2})
+mdb.jobs['job-7777']._Message(END_STEP, {'phase': STANDARD_PHASE, 'stepId': 2, 
+    'jobName': 'job-7777'})
+mdb.jobs['job-7777']._Message(COMPLETED, {'phase': STANDARD_PHASE, 
+    'message': 'Analysis phase complete', 'jobName': 'job-7777'})
+mdb.jobs['job-7777']._Message(JOB_COMPLETED, {
+    'time': 'Thu Dec  8 15:07:14 2022', 'jobName': 'job-7777'})
+# Save by ck20044 on 2022_12_08-15.07.54; build 2022.HF3 2022_05_20-02.07.52 176569
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+mdb.models['Model-1'].parts['Pin/rope'].AddCells(faceList=
+    mdb.models['Model-1'].parts['Pin/rope'].faces.getSequenceFromMask(mask=(
+    '[#3f ]', ), ))
+mdb.models['Model-1'].parts['Pin/rope'].setValues(space=THREE_D, type=
+    DEFORMABLE_BODY)
+mdb.models['Model-1'].Material(name='Material-2')
+mdb.models['Model-1'].materials['Material-2'].Elastic(table=((500000.0, 0.3), 
+    ))
+mdb.models['Model-1'].HomogeneousSolidSection(material='Structural Steel', 
+    name='Section-2', thickness=None)
+mdb.models['Model-1'].sections['Section-2'].setValues(material='Material-2', 
+    thickness=None)
+mdb.models['Model-1'].parts['Pin/rope'].Set(cells=
+    mdb.models['Model-1'].parts['Pin/rope'].cells.getSequenceFromMask(('[#1 ]', 
+    ), ), name='Set-4')
+mdb.models['Model-1'].parts['Pin/rope'].SectionAssignment(offset=0.0, 
+    offsetField='', offsetType=MIDDLE_SURFACE, region=
+    mdb.models['Model-1'].parts['Pin/rope'].sets['Set-4'], sectionName=
+    'Section-2', thicknessAssignment=FROM_SECTION)
+mdb.models['Model-1'].parts['Pin/rope'].seedPart(deviationFactor=0.1, 
+    minSizeFactor=0.1, size=5.0)
+mdb.models['Model-1'].parts['Pin/rope'].setMeshControls(elemShape=TET, regions=
+    mdb.models['Model-1'].parts['Pin/rope'].cells.getSequenceFromMask(('[#1 ]', 
+    ), ), technique=FREE)
+mdb.models['Model-1'].parts['Pin/rope'].setElementType(elemTypes=(ElemType(
+    elemCode=C3D20R, elemLibrary=STANDARD), ElemType(elemCode=C3D15, 
+    elemLibrary=STANDARD), ElemType(elemCode=C3D10, elemLibrary=STANDARD)), 
+    regions=(mdb.models['Model-1'].parts['Pin/rope'].cells.getSequenceFromMask(
+    ('[#1 ]', ), ), ))
+mdb.models['Model-1'].parts['Pin/rope'].generateMesh()
+mdb.models['Model-1'].rootAssembly.regenerate()
+mdb.Job(atTime=None, contactPrint=OFF, description='', echoPrint=OFF, 
+    explicitPrecision=SINGLE, getMemoryFromAnalysis=True, historyPrint=OFF, 
+    memory=90, memoryUnits=PERCENTAGE, model='Model-1', modelPrint=OFF, 
+    multiprocessingMode=DEFAULT, name='job5', nodalOutputPrecision=SINGLE, 
+    numCpus=1, numGPUs=0, numThreadsPerMpiProcess=1, queue=None, resultsFormat=
+    ODB, scratch='', type=ANALYSIS, userSubroutine='', waitHours=0, 
+    waitMinutes=0)
+mdb.jobs['job5'].submit(consistencyChecking=OFF)
+mdb.jobs['job5']._Message(STARTED, {'phase': BATCHPRE_PHASE, 
+    'clientHost': 'HP-P9-0', 'handle': 0, 'jobName': 'job5'})
+mdb.jobs['job5']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'THE RATIO OF THE MAXIMUM INCREMENTAL ADJUSTMENT TO THE AVERAGE CHARACTERISTIC LENGTH IS 1.23132E-02 AT NODE 35 INSTANCE GCU Lifting Lug v1-1 ON THE SURFACE PAIR (General_Contact_Faces,General_Contact_Faces). MAGNITUDES OF STRAIN-FREE NODAL POSITION ADJUSTMENTS CAN BE OBSERVED IN CONTOUR PLOTS AND SYMBOL PLOTS OF THE "STRAINFREE" OUTPUT VARIABLE AT TIME=0.', 
+    'jobName': 'job5'})
+mdb.jobs['job5']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'NODE SET ASSEMBLY_PIN/ROPE-1_PIN/ROPE-REFPT_ HAS NO MEMBERS AND WILL BE IGNORED.  NODES DEFINED IN THIS SET MAY HAVE BEEN DELETED BECAUSE THEY WERE NOT CONNECTED TO ANY ELEMENTS.', 
+    'jobName': 'job5'})
+mdb.jobs['job5']._Message(ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\Users\\ck20044\\OneDrive - University of Bristol\\Summative FEA coursewokr\\job5.odb', 
+    'jobName': 'job5'})
+mdb.jobs['job5']._Message(COMPLETED, {'phase': BATCHPRE_PHASE, 
+    'message': 'Analysis phase complete', 'jobName': 'job5'})
+mdb.jobs['job5']._Message(STARTED, {'phase': STANDARD_PHASE, 
+    'clientHost': 'HP-P9-0', 'handle': 10112, 'jobName': 'job5'})
+mdb.jobs['job5']._Message(STEP, {'stepName': 'settle contact', 
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'job5'})
+mdb.jobs['job5']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 0, 'jobName': 'job5'})
+mdb.jobs['job5']._Message(MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'job5', 'memory': 84.0})
+mdb.jobs['job5']._Message(PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 
+    'physical_memory': 112640.0, 'jobName': 'job5'})
+mdb.jobs['job5']._Message(MINIMUM_MEMORY, {'minimum_memory': 24.0, 
+    'phase': STANDARD_PHASE, 'jobName': 'job5'})
+mdb.jobs['job5']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 1, 'jobName': 'job5'})
+mdb.jobs['job5']._Message(STATUS, {'totalTime': 0.1, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 1, 'stepTime': 0.1, 'step': 1, 
+    'jobName': 'job5', 'severe': 3, 'iterations': 4, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['job5']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 2, 'jobName': 'job5'})
+mdb.jobs['job5']._Message(STATUS, {'totalTime': 0.2, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 2, 'stepTime': 0.2, 'step': 1, 
+    'jobName': 'job5', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['job5']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 3, 'jobName': 'job5'})
+mdb.jobs['job5']._Message(STATUS, {'totalTime': 0.35, 'attempts': 1, 
+    'timeIncrement': 0.15, 'increment': 3, 'stepTime': 0.35, 'step': 1, 
+    'jobName': 'job5', 'severe': 1, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 0})
+mdb.jobs['job5']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 4, 'jobName': 'job5'})
+mdb.jobs['job5']._Message(STATUS, {'totalTime': 0.575, 'attempts': 1, 
+    'timeIncrement': 0.225, 'increment': 4, 'stepTime': 0.575, 'step': 1, 
+    'jobName': 'job5', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['job5']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 5, 'jobName': 'job5'})
+mdb.jobs['job5']._Message(STATUS, {'totalTime': 0.9125, 'attempts': 1, 
+    'timeIncrement': 0.3375, 'increment': 5, 'stepTime': 0.9125, 'step': 1, 
+    'jobName': 'job5', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['job5']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 6, 'jobName': 'job5'})
+mdb.jobs['job5']._Message(STATUS, {'totalTime': 1.0, 'attempts': 1, 
+    'timeIncrement': 0.0874999999999999, 'increment': 6, 'stepTime': 1.0, 
+    'step': 1, 'jobName': 'job5', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['job5']._Message(END_STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'job5'})
+mdb.jobs['job5']._Message(STEP, {'phase': STANDARD_PHASE, 'stepId': 2, 
+    'jobName': 'job5'})
+mdb.jobs['job5']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 0, 'jobName': 'job5'})
+mdb.jobs['job5']._Message(MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'job5', 'memory': 77.0})
+mdb.jobs['job5']._Message(PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 
+    'physical_memory': 112640.0, 'jobName': 'job5'})
+mdb.jobs['job5']._Message(MINIMUM_MEMORY, {'minimum_memory': 22.0, 
+    'phase': STANDARD_PHASE, 'jobName': 'job5'})
+mdb.jobs['job5']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 1, 'jobName': 'job5'})
+mdb.jobs['job5']._Message(STATUS, {'totalTime': 1.1, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 1, 'stepTime': 0.1, 'step': 2, 
+    'jobName': 'job5', 'severe': 2, 'iterations': 3, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['job5']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 2, 'jobName': 'job5'})
+mdb.jobs['job5']._Message(STATUS, {'totalTime': 1.2, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 2, 'stepTime': 0.2, 'step': 2, 
+    'jobName': 'job5', 'severe': 0, 'iterations': 2, 'phase': STANDARD_PHASE, 
+    'equilibrium': 2})
+mdb.jobs['job5']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 3, 'jobName': 'job5'})
+mdb.jobs['job5']._Message(STATUS, {'totalTime': 1.35, 'attempts': 1, 
+    'timeIncrement': 0.15, 'increment': 3, 'stepTime': 0.35, 'step': 2, 
+    'jobName': 'job5', 'severe': 2, 'iterations': 3, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['job5']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 4, 'jobName': 'job5'})
+mdb.jobs['job5']._Message(STATUS, {'totalTime': 1.575, 'attempts': 1, 
+    'timeIncrement': 0.225, 'increment': 4, 'stepTime': 0.575, 'step': 2, 
+    'jobName': 'job5', 'severe': 1, 'iterations': 3, 'phase': STANDARD_PHASE, 
+    'equilibrium': 2})
+mdb.jobs['job5']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 5, 'jobName': 'job5'})
+mdb.jobs['job5']._Message(STATUS, {'totalTime': 1.9125, 'attempts': 1, 
+    'timeIncrement': 0.3375, 'increment': 5, 'stepTime': 0.9125, 'step': 2, 
+    'jobName': 'job5', 'severe': 1, 'iterations': 3, 'phase': STANDARD_PHASE, 
+    'equilibrium': 2})
+mdb.jobs['job5']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 6, 'jobName': 'job5'})
+mdb.jobs['job5']._Message(STATUS, {'totalTime': 2.0, 'attempts': 1, 
+    'timeIncrement': 0.0874999999999999, 'increment': 6, 'stepTime': 1.0, 
+    'step': 2, 'jobName': 'job5', 'severe': 0, 'iterations': 2, 
+    'phase': STANDARD_PHASE, 'equilibrium': 2})
+mdb.jobs['job5']._Message(END_STEP, {'phase': STANDARD_PHASE, 'stepId': 2, 
+    'jobName': 'job5'})
+mdb.jobs['job5']._Message(COMPLETED, {'phase': STANDARD_PHASE, 
+    'message': 'Analysis phase complete', 'jobName': 'job5'})
+mdb.jobs['job5']._Message(JOB_COMPLETED, {'time': 'Thu Dec  8 20:10:23 2022', 
+    'jobName': 'job5'})
+mdb.models['Model-1'].parts['Pin/rope'].deleteMesh()
+mdb.models['Model-1'].parts['Pin/rope'].seedPart(deviationFactor=0.1, 
+    minSizeFactor=0.1, size=4.0)
+mdb.models['Model-1'].parts['Pin/rope'].generateMesh()
+mdb.models['Model-1'].parts['GCU Lifting Lug v1'].deleteMesh()
+mdb.models['Model-1'].parts['GCU Lifting Lug v1'].seedPart(deviationFactor=0.1, 
+    minSizeFactor=0.1, size=5.0)
+mdb.models['Model-1'].parts['GCU Lifting Lug v1'].generateMesh()
+mdb.models['Model-1'].parts['Pin/rope'].deleteMesh()
+mdb.models['Model-1'].parts['Pin/rope'].seedPart(deviationFactor=0.1, 
+    minSizeFactor=0.1, size=5.0)
+mdb.models['Model-1'].parts['Pin/rope'].generateMesh()
+mdb.models['Model-1'].rootAssembly.regenerate()
+mdb.Job(atTime=None, contactPrint=OFF, description='', echoPrint=OFF, 
+    explicitPrecision=SINGLE, getMemoryFromAnalysis=True, historyPrint=OFF, 
+    memory=90, memoryUnits=PERCENTAGE, model='Model-1', modelPrint=OFF, 
+    multiprocessingMode=DEFAULT, name='g5', nodalOutputPrecision=SINGLE, 
+    numCpus=1, numGPUs=0, numThreadsPerMpiProcess=1, queue=None, resultsFormat=
+    ODB, scratch='', type=ANALYSIS, userSubroutine='', waitHours=0, 
+    waitMinutes=0)
+mdb.jobs['g5'].submit(consistencyChecking=OFF)
+mdb.jobs['g5']._Message(STARTED, {'phase': BATCHPRE_PHASE, 
+    'clientHost': 'HP-P9-0', 'handle': 0, 'jobName': 'g5'})
+mdb.jobs['g5']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'THE RATIO OF THE MAXIMUM INCREMENTAL ADJUSTMENT TO THE AVERAGE CHARACTERISTIC LENGTH IS 1.12990E-02 AT NODE 7311 INSTANCE GCU Lifting Lug v1-1 ON THE SURFACE PAIR (General_Contact_Faces,General_Contact_Faces). MAGNITUDES OF STRAIN-FREE NODAL POSITION ADJUSTMENTS CAN BE OBSERVED IN CONTOUR PLOTS AND SYMBOL PLOTS OF THE "STRAINFREE" OUTPUT VARIABLE AT TIME=0.', 
+    'jobName': 'g5'})
+mdb.jobs['g5']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'NODE SET ASSEMBLY_PIN/ROPE-1_PIN/ROPE-REFPT_ HAS NO MEMBERS AND WILL BE IGNORED.  NODES DEFINED IN THIS SET MAY HAVE BEEN DELETED BECAUSE THEY WERE NOT CONNECTED TO ANY ELEMENTS.', 
+    'jobName': 'g5'})
+mdb.jobs['g5']._Message(ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\Users\\ck20044\\OneDrive - University of Bristol\\Summative FEA coursewokr\\g5.odb', 
+    'jobName': 'g5'})
+mdb.jobs['g5']._Message(COMPLETED, {'phase': BATCHPRE_PHASE, 
+    'message': 'Analysis phase complete', 'jobName': 'g5'})
+mdb.jobs['g5']._Message(STARTED, {'phase': STANDARD_PHASE, 
+    'clientHost': 'HP-P9-0', 'handle': 16460, 'jobName': 'g5'})
+mdb.jobs['g5']._Message(STEP, {'stepName': 'settle contact', 
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'g5'})
+mdb.jobs['g5']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 0, 'jobName': 'g5'})
+mdb.jobs['g5']._Message(MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'g5', 'memory': 171.0})
+mdb.jobs['g5']._Message(PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 
+    'physical_memory': 112640.0, 'jobName': 'g5'})
+mdb.jobs['g5']._Message(MINIMUM_MEMORY, {'minimum_memory': 34.0, 
+    'phase': STANDARD_PHASE, 'jobName': 'g5'})
+mdb.jobs['g5']._Message(STATUS, {'totalTime': 0.0, 'attempts': ' 1U', 
+    'timeIncrement': 0.1, 'increment': 1, 'stepTime': 0.0, 'step': 1, 
+    'jobName': 'g5', 'severe': 5, 'iterations': 5, 'phase': STANDARD_PHASE, 
+    'equilibrium': 0})
+mdb.jobs['g5']._Message(STATUS, {'totalTime': 0.0, 'attempts': ' 2U', 
+    'timeIncrement': 0.025, 'increment': 1, 'stepTime': 0.0, 'step': 1, 
+    'jobName': 'g5', 'severe': 5, 'iterations': 5, 'phase': STANDARD_PHASE, 
+    'equilibrium': 0})
+mdb.jobs['g5']._Message(STATUS, {'totalTime': 0.0, 'attempts': ' 3U', 
+    'timeIncrement': 0.00625, 'increment': 1, 'stepTime': 0.0, 'step': 1, 
+    'jobName': 'g5', 'severe': 5, 'iterations': 5, 'phase': STANDARD_PHASE, 
+    'equilibrium': 0})
+mdb.jobs['g5']._Message(STATUS, {'totalTime': 0.0, 'attempts': ' 4U', 
+    'timeIncrement': 0.0015625, 'increment': 1, 'stepTime': 0.0, 'step': 1, 
+    'jobName': 'g5', 'severe': 5, 'iterations': 5, 'phase': STANDARD_PHASE, 
+    'equilibrium': 0})
+mdb.jobs['g5']._Message(STATUS, {'totalTime': 0.0, 'attempts': ' 5U', 
+    'timeIncrement': 0.000390625, 'increment': 1, 'stepTime': 0.0, 'step': 1, 
+    'jobName': 'g5', 'severe': 5, 'iterations': 6, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['g5']._Message(ERROR, {'phase': STANDARD_PHASE, 
+    'message': 'Too many attempts made for this increment', 'jobName': 'g5'})
+mdb.jobs['g5']._Message(ABORTED, {'phase': STANDARD_PHASE, 
+    'message': 'Analysis phase failed due to errors', 'jobName': 'g5'})
+mdb.jobs['g5']._Message(ERROR, {
+    'message': 'Abaqus/Standard Analysis exited with an error - Please see the  message file for possible error messages if the file exists.', 
+    'jobName': 'g5'})
+mdb.jobs['g5']._Message(JOB_ABORTED, {
+    'message': 'Abaqus/Standard Analysis exited with an error - Please see the  message file for possible error messages if the file exists.', 
+    'jobName': 'g5'})
+del mdb.models['Model-1'].parts['Pin/rope'].sectionAssignments[0]
+mdb.models['Model-1'].interactionProperties['Friction'].tangentialBehavior.setValues(
+    dependencies=0, directionality=ISOTROPIC, elasticSlipStiffness=None, 
+    formulation=PENALTY, fraction=0.005, maximumElasticSlip=FRACTION, 
+    pressureDependency=OFF, shearStressLimit=None, slipRateDependency=OFF, 
+    table=((0.2, ), ), temperatureDependency=OFF)
+mdb.models['Model-1'].interactionProperties['Friction'].normalBehavior.setValues(
+    allowSeparation=OFF, constraintEnforcementMethod=DEFAULT, 
+    pressureOverclosure=HARD)
+mdb.models['Model-1'].parts['Pin/rope'].deleteMesh()
+mdb.models['Model-1'].parts['Pin/rope'].seedPart(deviationFactor=0.1, 
+    minSizeFactor=0.1, size=7.0)
+mdb.models['Model-1'].parts['Pin/rope'].generateMesh()
+mdb.models['Model-1'].rootAssembly.regenerate()
+mdb.Job(atTime=None, contactPrint=OFF, description='', echoPrint=OFF, 
+    explicitPrecision=SINGLE, getMemoryFromAnalysis=True, historyPrint=OFF, 
+    memory=90, memoryUnits=PERCENTAGE, model='Model-1', modelPrint=OFF, 
+    multiprocessingMode=DEFAULT, name='Job-14', nodalOutputPrecision=SINGLE, 
+    numCpus=1, numGPUs=0, numThreadsPerMpiProcess=1, queue=None, resultsFormat=
+    ODB, scratch='', type=ANALYSIS, userSubroutine='', waitHours=0, 
+    waitMinutes=0)
+mdb.jobs['Job-14'].submit(consistencyChecking=OFF)
+mdb.jobs['Job-14']._Message(STARTED, {'phase': BATCHPRE_PHASE, 
+    'clientHost': 'HP-P9-0', 'handle': 0, 'jobName': 'Job-14'})
+mdb.jobs['Job-14']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'NODE SET ASSEMBLY_PIN/ROPE-1_PIN/ROPE-REFPT_ HAS NO MEMBERS AND WILL BE IGNORED.  NODES DEFINED IN THIS SET MAY HAVE BEEN DELETED BECAUSE THEY WERE NOT CONNECTED TO ANY ELEMENTS.', 
+    'jobName': 'Job-14'})
+mdb.jobs['Job-14']._Message(ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\Users\\ck20044\\OneDrive - University of Bristol\\Summative FEA coursewokr\\Job-14.odb', 
+    'jobName': 'Job-14'})
+mdb.jobs['Job-14']._Message(COMPLETED, {'phase': BATCHPRE_PHASE, 
+    'message': 'Analysis phase complete', 'jobName': 'Job-14'})
+mdb.jobs['Job-14']._Message(STARTED, {'phase': STANDARD_PHASE, 
+    'clientHost': 'HP-P9-0', 'handle': 25472, 'jobName': 'Job-14'})
+mdb.jobs['Job-14']._Message(STEP, {'stepName': 'settle contact', 
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'Job-14'})
+mdb.jobs['Job-14']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 0, 'jobName': 'Job-14'})
+mdb.jobs['Job-14']._Message(MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'Job-14', 'memory': 151.0})
+mdb.jobs['Job-14']._Message(PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 
+    'physical_memory': 112640.0, 'jobName': 'Job-14'})
+mdb.jobs['Job-14']._Message(MINIMUM_MEMORY, {'minimum_memory': 31.0, 
+    'phase': STANDARD_PHASE, 'jobName': 'Job-14'})
+mdb.jobs['Job-14']._Message(STATUS, {'totalTime': 0.0, 'attempts': ' 1U', 
+    'timeIncrement': 0.1, 'increment': 1, 'stepTime': 0.0, 'step': 1, 
+    'jobName': 'Job-14', 'severe': 0, 'iterations': 4, 'phase': STANDARD_PHASE, 
+    'equilibrium': 4})
+mdb.jobs['Job-14']._Message(STATUS, {'totalTime': 0.0, 'attempts': ' 2U', 
+    'timeIncrement': 0.025, 'increment': 1, 'stepTime': 0.0, 'step': 1, 
+    'jobName': 'Job-14', 'severe': 4, 'iterations': 21, 
+    'phase': STANDARD_PHASE, 'equilibrium': 17})
+mdb.jobs['Job-14']._Message(STATUS, {'totalTime': 0.0, 'attempts': ' 3U', 
+    'timeIncrement': 0.00625, 'increment': 1, 'stepTime': 0.0, 'step': 1, 
+    'jobName': 'Job-14', 'severe': 4, 'iterations': 12, 
+    'phase': STANDARD_PHASE, 'equilibrium': 8})
+mdb.jobs['Job-14']._Message(STATUS, {'totalTime': 0.0, 'attempts': ' 4U', 
+    'timeIncrement': 0.0015625, 'increment': 1, 'stepTime': 0.0, 'step': 1, 
+    'jobName': 'Job-14', 'severe': 3, 'iterations': 20, 
+    'phase': STANDARD_PHASE, 'equilibrium': 17})
+mdb.jobs['Job-14']._Message(STATUS, {'totalTime': 0.0, 'attempts': ' 5U', 
+    'timeIncrement': 0.000390625, 'increment': 1, 'stepTime': 0.0, 'step': 1, 
+    'jobName': 'Job-14', 'severe': 1, 'iterations': 8, 'phase': STANDARD_PHASE, 
+    'equilibrium': 7})
+mdb.jobs['Job-14']._Message(ERROR, {'phase': STANDARD_PHASE, 
+    'message': 'Too many attempts made for this increment', 
+    'jobName': 'Job-14'})
+mdb.jobs['Job-14']._Message(ABORTED, {'phase': STANDARD_PHASE, 
+    'message': 'Analysis phase failed due to errors', 'jobName': 'Job-14'})
+mdb.jobs['Job-14']._Message(ERROR, {
+    'message': 'Abaqus/Standard Analysis exited with an error - Please see the  message file for possible error messages if the file exists.', 
+    'jobName': 'Job-14'})
+mdb.jobs['Job-14']._Message(JOB_ABORTED, {
+    'message': 'Abaqus/Standard Analysis exited with an error - Please see the  message file for possible error messages if the file exists.', 
+    'jobName': 'Job-14'})
+del mdb.models['Model-1'].parts['Pin/rope'].sectionAssignments[0]
+mdb.models['Model-1'].parts['Pin/rope'].Set(cells=
+    mdb.models['Model-1'].parts['Pin/rope'].cells.getSequenceFromMask(('[#1 ]', 
+    ), ), name='Set-7')
+mdb.models['Model-1'].parts['Pin/rope'].SectionAssignment(offset=0.0, 
+    offsetField='', offsetType=MIDDLE_SURFACE, region=
+    mdb.models['Model-1'].parts['Pin/rope'].sets['Set-7'], sectionName=
+    'Section-2', thicknessAssignment=FROM_SECTION)
+del mdb.models['Model-1'].parts['Pin/rope'].sets['Set-4']
+del mdb.models['Model-1'].parts['Pin/rope'].sets['Set-1']
+mdb.models['Model-1'].rootAssembly.regenerate()
+mdb.Job(atTime=None, contactPrint=OFF, description='', echoPrint=OFF, 
+    explicitPrecision=SINGLE, getMemoryFromAnalysis=True, historyPrint=OFF, 
+    memory=90, memoryUnits=PERCENTAGE, model='Model-1', modelPrint=OFF, 
+    multiprocessingMode=DEFAULT, name='Job-15', nodalOutputPrecision=SINGLE, 
+    numCpus=1, numGPUs=0, numThreadsPerMpiProcess=1, queue=None, resultsFormat=
+    ODB, scratch='', type=ANALYSIS, userSubroutine='', waitHours=0, 
+    waitMinutes=0)
+mdb.jobs['Job-15'].submit(consistencyChecking=OFF)
+mdb.jobs['Job-15']._Message(STARTED, {'phase': BATCHPRE_PHASE, 
+    'clientHost': 'HP-P9-0', 'handle': 0, 'jobName': 'Job-15'})
+mdb.jobs['Job-15']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'NODE SET ASSEMBLY_PIN/ROPE-1_PIN/ROPE-REFPT_ HAS NO MEMBERS AND WILL BE IGNORED.  NODES DEFINED IN THIS SET MAY HAVE BEEN DELETED BECAUSE THEY WERE NOT CONNECTED TO ANY ELEMENTS.', 
+    'jobName': 'Job-15'})
+mdb.jobs['Job-15']._Message(ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\Users\\ck20044\\OneDrive - University of Bristol\\Summative FEA coursewokr\\Job-15.odb', 
+    'jobName': 'Job-15'})
+mdb.jobs['Job-15']._Message(COMPLETED, {'phase': BATCHPRE_PHASE, 
+    'message': 'Analysis phase complete', 'jobName': 'Job-15'})
+mdb.jobs['Job-15']._Message(STARTED, {'phase': STANDARD_PHASE, 
+    'clientHost': 'HP-P9-0', 'handle': 11564, 'jobName': 'Job-15'})
+mdb.jobs['Job-15']._Message(STEP, {'stepName': 'settle contact', 
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'Job-15'})
+mdb.jobs['Job-15']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 0, 'jobName': 'Job-15'})
+mdb.jobs['Job-15']._Message(MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'Job-15', 'memory': 151.0})
+mdb.jobs['Job-15']._Message(PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 
+    'physical_memory': 112640.0, 'jobName': 'Job-15'})
+mdb.jobs['Job-15']._Message(MINIMUM_MEMORY, {'minimum_memory': 31.0, 
+    'phase': STANDARD_PHASE, 'jobName': 'Job-15'})
+mdb.jobs['Job-15']._Message(STATUS, {'totalTime': 0.0, 'attempts': ' 1U', 
+    'timeIncrement': 0.1, 'increment': 1, 'stepTime': 0.0, 'step': 1, 
+    'jobName': 'Job-15', 'severe': 0, 'iterations': 4, 'phase': STANDARD_PHASE, 
+    'equilibrium': 4})
+mdb.jobs['Job-15']._Message(STATUS, {'totalTime': 0.0, 'attempts': ' 2U', 
+    'timeIncrement': 0.025, 'increment': 1, 'stepTime': 0.0, 'step': 1, 
+    'jobName': 'Job-15', 'severe': 4, 'iterations': 21, 
+    'phase': STANDARD_PHASE, 'equilibrium': 17})
+mdb.jobs['Job-15']._Message(STATUS, {'totalTime': 0.0, 'attempts': ' 3U', 
+    'timeIncrement': 0.00625, 'increment': 1, 'stepTime': 0.0, 'step': 1, 
+    'jobName': 'Job-15', 'severe': 4, 'iterations': 12, 
+    'phase': STANDARD_PHASE, 'equilibrium': 8})
+mdb.jobs['Job-15']._Message(STATUS, {'totalTime': 0.0, 'attempts': ' 4U', 
+    'timeIncrement': 0.0015625, 'increment': 1, 'stepTime': 0.0, 'step': 1, 
+    'jobName': 'Job-15', 'severe': 3, 'iterations': 20, 
+    'phase': STANDARD_PHASE, 'equilibrium': 17})
+mdb.jobs['Job-15']._Message(STATUS, {'totalTime': 0.0, 'attempts': ' 5U', 
+    'timeIncrement': 0.000390625, 'increment': 1, 'stepTime': 0.0, 'step': 1, 
+    'jobName': 'Job-15', 'severe': 1, 'iterations': 8, 'phase': STANDARD_PHASE, 
+    'equilibrium': 7})
+mdb.jobs['Job-15']._Message(ERROR, {'phase': STANDARD_PHASE, 
+    'message': 'Too many attempts made for this increment', 
+    'jobName': 'Job-15'})
+mdb.jobs['Job-15']._Message(ABORTED, {'phase': STANDARD_PHASE, 
+    'message': 'Analysis phase failed due to errors', 'jobName': 'Job-15'})
+mdb.jobs['Job-15']._Message(ERROR, {
+    'message': 'Abaqus/Standard Analysis exited with an error - Please see the  message file for possible error messages if the file exists.', 
+    'jobName': 'Job-15'})
+mdb.jobs['Job-15']._Message(JOB_ABORTED, {
+    'message': 'Abaqus/Standard Analysis exited with an error - Please see the  message file for possible error messages if the file exists.', 
+    'jobName': 'Job-15'})
+mdb.models['Model-1'].interactionProperties['Friction'].tangentialBehavior.setValues(
+    dependencies=0, directionality=ISOTROPIC, elasticSlipStiffness=None, 
+    formulation=PENALTY, fraction=0.005, maximumElasticSlip=FRACTION, 
+    pressureDependency=OFF, shearStressLimit=None, slipRateDependency=OFF, 
+    table=((0.2, ), ), temperatureDependency=OFF)
+mdb.models['Model-1'].interactionProperties['Friction'].normalBehavior.setValues(
+    allowSeparation=ON, constraintEnforcementMethod=DEFAULT, 
+    pressureOverclosure=HARD)
+mdb.Job(atTime=None, contactPrint=OFF, description='', echoPrint=OFF, 
+    explicitPrecision=SINGLE, getMemoryFromAnalysis=True, historyPrint=OFF, 
+    memory=90, memoryUnits=PERCENTAGE, model='Model-1', modelPrint=OFF, 
+    multiprocessingMode=DEFAULT, name='Job-16', nodalOutputPrecision=SINGLE, 
+    numCpus=1, numGPUs=0, numThreadsPerMpiProcess=1, queue=None, resultsFormat=
+    ODB, scratch='', type=ANALYSIS, userSubroutine='', waitHours=0, 
+    waitMinutes=0)
+mdb.jobs['Job-16'].submit(consistencyChecking=OFF)
+mdb.jobs['Job-16']._Message(STARTED, {'phase': BATCHPRE_PHASE, 
+    'clientHost': 'HP-P9-0', 'handle': 0, 'jobName': 'Job-16'})
+mdb.jobs['Job-16']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'NODE SET ASSEMBLY_PIN/ROPE-1_PIN/ROPE-REFPT_ HAS NO MEMBERS AND WILL BE IGNORED.  NODES DEFINED IN THIS SET MAY HAVE BEEN DELETED BECAUSE THEY WERE NOT CONNECTED TO ANY ELEMENTS.', 
+    'jobName': 'Job-16'})
+mdb.jobs['Job-16']._Message(ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\Users\\ck20044\\OneDrive - University of Bristol\\Summative FEA coursewokr\\Job-16.odb', 
+    'jobName': 'Job-16'})
+mdb.jobs['Job-16']._Message(COMPLETED, {'phase': BATCHPRE_PHASE, 
+    'message': 'Analysis phase complete', 'jobName': 'Job-16'})
+mdb.jobs['Job-16']._Message(STARTED, {'phase': STANDARD_PHASE, 
+    'clientHost': 'HP-P9-0', 'handle': 2188, 'jobName': 'Job-16'})
+mdb.jobs['Job-16']._Message(STEP, {'stepName': 'settle contact', 
+    'phase': STANDARD_PHASE, 'stepId': 1, 'jobName': 'Job-16'})
+mdb.jobs['Job-16']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 0, 'jobName': 'Job-16'})
+mdb.jobs['Job-16']._Message(MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'Job-16', 'memory': 151.0})
+mdb.jobs['Job-16']._Message(PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 
+    'physical_memory': 112640.0, 'jobName': 'Job-16'})
+mdb.jobs['Job-16']._Message(MINIMUM_MEMORY, {'minimum_memory': 31.0, 
+    'phase': STANDARD_PHASE, 'jobName': 'Job-16'})
+mdb.jobs['Job-16']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 1, 'jobName': 'Job-16'})
+mdb.jobs['Job-16']._Message(STATUS, {'totalTime': 0.1, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 1, 'stepTime': 0.1, 'step': 1, 
+    'jobName': 'Job-16', 'severe': 5, 'iterations': 13, 
+    'phase': STANDARD_PHASE, 'equilibrium': 8})
+mdb.jobs['Job-16']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 2, 'jobName': 'Job-16'})
+mdb.jobs['Job-16']._Message(STATUS, {'totalTime': 0.2, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 2, 'stepTime': 0.2, 'step': 1, 
+    'jobName': 'Job-16', 'severe': 9, 'iterations': 11, 
+    'phase': STANDARD_PHASE, 'equilibrium': 2})
+mdb.jobs['Job-16']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 3, 'jobName': 'Job-16'})
+mdb.jobs['Job-16']._Message(STATUS, {'totalTime': 0.3, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 3, 'stepTime': 0.3, 'step': 1, 
+    'jobName': 'Job-16', 'severe': 3, 'iterations': 5, 'phase': STANDARD_PHASE, 
+    'equilibrium': 2})
+mdb.jobs['Job-16']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 4, 'jobName': 'Job-16'})
+mdb.jobs['Job-16']._Message(STATUS, {'totalTime': 0.45, 'attempts': 1, 
+    'timeIncrement': 0.15, 'increment': 4, 'stepTime': 0.45, 'step': 1, 
+    'jobName': 'Job-16', 'severe': 3, 'iterations': 4, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-16']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 5, 'jobName': 'Job-16'})
+mdb.jobs['Job-16']._Message(STATUS, {'totalTime': 0.675, 'attempts': 1, 
+    'timeIncrement': 0.225, 'increment': 5, 'stepTime': 0.675, 'step': 1, 
+    'jobName': 'Job-16', 'severe': 0, 'iterations': 4, 'phase': STANDARD_PHASE, 
+    'equilibrium': 4})
+mdb.jobs['Job-16']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 6, 'jobName': 'Job-16'})
+mdb.jobs['Job-16']._Message(STATUS, {'totalTime': 1.0, 'attempts': 1, 
+    'timeIncrement': 0.325, 'increment': 6, 'stepTime': 1.0, 'step': 1, 
+    'jobName': 'Job-16', 'severe': 0, 'iterations': 3, 'phase': STANDARD_PHASE, 
+    'equilibrium': 3})
+mdb.jobs['Job-16']._Message(END_STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'Job-16'})
+mdb.jobs['Job-16']._Message(STEP, {'phase': STANDARD_PHASE, 'stepId': 2, 
+    'jobName': 'Job-16'})
+mdb.jobs['Job-16']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 0, 'jobName': 'Job-16'})
+mdb.jobs['Job-16']._Message(MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'Job-16', 'memory': 149.0})
+mdb.jobs['Job-16']._Message(PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 
+    'physical_memory': 112640.0, 'jobName': 'Job-16'})
+mdb.jobs['Job-16']._Message(MINIMUM_MEMORY, {'minimum_memory': 30.0, 
+    'phase': STANDARD_PHASE, 'jobName': 'Job-16'})
+mdb.jobs['Job-16']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 1, 'jobName': 'Job-16'})
+mdb.jobs['Job-16']._Message(STATUS, {'totalTime': 1.1, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 1, 'stepTime': 0.1, 'step': 2, 
+    'jobName': 'Job-16', 'severe': 1, 'iterations': 4, 'phase': STANDARD_PHASE, 
+    'equilibrium': 3})
+mdb.jobs['Job-16']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 2, 'jobName': 'Job-16'})
+mdb.jobs['Job-16']._Message(STATUS, {'totalTime': 1.2, 'attempts': 1, 
+    'timeIncrement': 0.1, 'increment': 2, 'stepTime': 0.2, 'step': 2, 
+    'jobName': 'Job-16', 'severe': 0, 'iterations': 2, 'phase': STANDARD_PHASE, 
+    'equilibrium': 2})
+mdb.jobs['Job-16']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 3, 'jobName': 'Job-16'})
+mdb.jobs['Job-16']._Message(STATUS, {'totalTime': 1.35, 'attempts': 1, 
+    'timeIncrement': 0.15, 'increment': 3, 'stepTime': 0.35, 'step': 2, 
+    'jobName': 'Job-16', 'severe': 0, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-16']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 4, 'jobName': 'Job-16'})
+mdb.jobs['Job-16']._Message(STATUS, {'totalTime': 1.575, 'attempts': 1, 
+    'timeIncrement': 0.225, 'increment': 4, 'stepTime': 0.575, 'step': 2, 
+    'jobName': 'Job-16', 'severe': 1, 'iterations': 1, 'phase': STANDARD_PHASE, 
+    'equilibrium': 0})
+mdb.jobs['Job-16']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 5, 'jobName': 'Job-16'})
+mdb.jobs['Job-16']._Message(STATUS, {'totalTime': 1.9125, 'attempts': 1, 
+    'timeIncrement': 0.3375, 'increment': 5, 'stepTime': 0.9125, 'step': 2, 
+    'jobName': 'Job-16', 'severe': 1, 'iterations': 2, 'phase': STANDARD_PHASE, 
+    'equilibrium': 1})
+mdb.jobs['Job-16']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 1, 
+    'frame': 6, 'jobName': 'Job-16'})
+mdb.jobs['Job-16']._Message(STATUS, {'totalTime': 2.0, 'attempts': 1, 
+    'timeIncrement': 0.0874999999999999, 'increment': 6, 'stepTime': 1.0, 
+    'step': 2, 'jobName': 'Job-16', 'severe': 1, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['Job-16']._Message(END_STEP, {'phase': STANDARD_PHASE, 'stepId': 2, 
+    'jobName': 'Job-16'})
+mdb.jobs['Job-16']._Message(COMPLETED, {'phase': STANDARD_PHASE, 
+    'message': 'Analysis phase complete', 'jobName': 'Job-16'})
+mdb.jobs['Job-16']._Message(JOB_COMPLETED, {'time': 'Thu Dec  8 20:30:24 2022', 
+    'jobName': 'Job-16'})
+# Save by ck20044 on 2022_12_08-20.32.26; build 2022.HF3 2022_05_20-02.07.52 176569
